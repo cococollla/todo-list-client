@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/Header/Header";
+import TaskList from "./components/TaskList/TaskList";
+import CreateTask from "./components/Task/CreateTask/CreateTask";
 
-function App() {
+const App: FC = () => {
+  const [isTaskModalOpen, setTaskModalOpen] = useState<boolean>(false);
+
+  const openCreateTaskModal = () => {
+    setTaskModalOpen(true);
+  };
+
+  const closeCreateTaskModal = () => {
+    setTaskModalOpen(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header openCreateTaskModal={openCreateTaskModal} />
+        <Routes>
+          <Route path="/tasks" element={<TaskList />} />
+        </Routes>
+        <CreateTask isOpen={isTaskModalOpen} onClose={closeCreateTaskModal} />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
