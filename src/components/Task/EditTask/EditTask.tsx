@@ -1,13 +1,15 @@
-import React, { useState, useEffect, ChangeEvent, FC } from "react";
+import React, { FC, useEffect, useState, ChangeEvent } from "react";
+import EditTaskProps from "./EditTask.props";
 import Modal from "../../Modal/Modal";
-import ApiServices from "../../../services/ApiServices";
-import CreateTaskProps from "./CreateTask.props";
+import Task from "../../../interfaces/Task";
 import styles from "../../Modal/Modal.module.css";
 
-const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
-  const [taskName, setTaskName] = useState<string>("");
-  const [taskDescription, setTaskDescription] = useState<string>("");
-  const [categoryId, setCategoryId] = useState<string>("");
+const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
+  const [taskName, setTaskName] = useState<string>(task.name.toString());
+  const [taskDescription, setTaskDescription] = useState<string>(
+    task.description.toString()
+  );
+  const [categoryId, setCategoryId] = useState<number>(task.categoryId);
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,25 +26,25 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       .catch((error) => {
         console.error("Error fetching categories:", error.message);
       });
-  }, []);
+  }, [isOpen]);
 
-  const handleCreateTask = () => {
-    const newTask = {
+  const handleEditTask = () => {
+    const editTask: Task = {
       name: taskName,
       description: taskDescription,
-      categoryId: Number(categoryId),
+      categoryId: categoryId,
+      id: task.id,
     };
 
-    ApiServices.createTask(newTask);
-    onClose();
+    onEditTask(editTask);
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Создание задачи"
-      buttonText="Создать"
+      title="Редактирование задачи"
+      buttonText="Сохранить"
       contentComponent={
         <div>
           <div className={styles.item_row}>
@@ -66,7 +68,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
                 name="taskCategory"
                 value={categoryId}
                 onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                  setCategoryId(e.target.value)
+                  setCategoryId(Number(e.target.value))
                 }
               >
                 <option value="" disabled>
@@ -94,9 +96,9 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       }
-      onCreateTask={handleCreateTask}
+      onCreateTask={() => handleEditTask()}
     />
   );
 };
 
-export default CreateTask;
+export default EditTask;

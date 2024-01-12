@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import "./Header.css";
-import HeaderProps from "../../interfaces/HeaderProps";
+import styles from "./Header.module.css";
+import HeaderProps from "./Header.props";
 
 const Header: FC<HeaderProps> = ({ openCreateTaskModal }) => {
   const handleCreateTaskClick = () => {
@@ -9,23 +9,23 @@ const Header: FC<HeaderProps> = ({ openCreateTaskModal }) => {
   };
 
   return (
-    <div className="header">
-      <div className="nav-item">
-        <label id="title" className="nav-title">
+    <div className={styles.header}>
+      <div className={styles.nav_item}>
+        <label id="title" className={styles.nav_title}>
           ToDo List
         </label>
         <div>
-          <Link to="/tasks" className="nav-link">
+          <Link to="/tasks" className={styles.nav_link}>
             Задачи
           </Link>
-          <label className="separator">|</label>
-          <Link to="/categories" className="nav-link">
+          <label className={styles.separator}>|</label>
+          <Link to="/categories" className={styles.nav_link}>
             Категории
           </Link>
         </div>
       </div>
       <div>
-        <a className="nav-link" onClick={handleCreateTaskClick}>
+        <a className={styles.nav_link} onClick={handleCreateTaskClick}>
           Добавить задачу
         </a>
       </div>

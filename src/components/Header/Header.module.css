@@ -7,12 +7,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0px 8px 24px 0px #00000080;
+  box-shadow: 0px 4px 10px 0px #00000080;
   height: 40px;
   font-family: "Roboto", sans-serif;
 }
 
-.nav-title {
+.nav_title {
   font-size: 40px;
   margin-right: 20px;
 }
@@ -22,18 +22,18 @@
   margin: 0 5px;
 }
 
-.nav-link {
+.nav_link {
   text-decoration: none;
   color: #dbe2ef;
   font-weight: bold;
   cursor: pointer;
 }
 
-.nav-link:hover {
+.nav_link:hover {
   color: #ffffff;
 }
 
-.nav-item {
+.nav_item {
   display: flex;
   align-items: center;
   flex-direction: row;

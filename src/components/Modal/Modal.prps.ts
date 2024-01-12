@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Task from "../../interfaces/Task";
 
 interface ModalProps {
   isOpen: boolean;
@@ -6,7 +7,7 @@ interface ModalProps {
   title?: string;
   buttonText: string;
   contentComponent: ReactNode;
-  onCreateTask: () => void;
+  onCreateTask: (task?: Task) => void;
 }
 
 export default ModalProps;

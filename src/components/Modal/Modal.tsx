@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import "./Modal.css";
-import ModalProps from "../../interfaces/ModalProps";
+import styles from "./Modal.module.css";
+import ModalProps from "./Modal.prps";
 
 const Modal: FC<ModalProps> = ({
   isOpen,
@@ -11,23 +11,29 @@ const Modal: FC<ModalProps> = ({
   onCreateTask,
 }) => {
   return (
-    <div className={isOpen ? "modal open" : "modal"}>
-      <div className="modal-content">
+    <div
+      className={isOpen ? `${styles.modal} ${styles.open}` : `${styles.modal}`}
+    >
+      <div className={styles.modal_content}>
         {title && (
-          <div className="title">
-            <span id="taskTitle">{title}</span>
+          <div className={styles.title}>
+            <span className={styles.taskTitle}>{title}</span>
           </div>
         )}
         {contentComponent}
-        <div className="button-container">
+        <div className={styles.button_container}>
           <button
-            className="button-primary"
+            className={styles.button_primary}
             type="button"
-            onClick={onCreateTask}
+            onClick={() => onCreateTask()}
           >
             {buttonText}
           </button>
-          <button className="button-secondary" type="button" onClick={onClose}>
+          <button
+            className={styles.button_secondary}
+            type="button"
+            onClick={onClose}
+          >
             Закрыть
           </button>
         </div>

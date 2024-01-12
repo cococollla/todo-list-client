@@ -1,0 +1,159 @@
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  animation-name: animate;
+  animation-duration: 0.2s;
+}
+
+.modal.open {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_content {
+  display: inline-block;
+  text-align: left;
+  background-color: #dbe2ef;
+  box-shadow: 0px 8px 24px 0px #00000080;
+  padding: 20px;
+  border-radius: 2px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+@keyframes animate {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal_content input,
+.modal_content select {
+  background-color: #dbe2ef;
+  width: 300px;
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.modal_content input:hover,
+.modal_content input:focus,
+.modal_content select:hover,
+.modal_content select:focus,
+.modal_content textarea:hover,
+.modal_content textarea:focus {
+  outline-style: none;
+  border-color: #257fea;
+}
+
+.modal_content label {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: #dbe2ef;
+  padding: 0 5px;
+}
+
+.modal_content button {
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.modal_content textarea {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #dbe2ef;
+  height: 70px;
+  border: 2px solid #3f72af;
+  padding: 10px;
+  border-radius: 4px;
+  resize: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.modal_content select option:checked {
+  color: #ffffff;
+  background-color: #3f72af;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.taskTitle {
+  margin-left: 10px;
+  font-size: 40px;
+  color: #3f72af;
+}
+
+.msgDelete {
+  margin: 30px 10px;
+}
+
+.button_container {
+  margin-right: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button_secondary {
+  padding: 8px 40;
+  background-color: #f0f0f0f0;
+  color: #3f72af;
+  border: 1px solid #3f72af;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button_secondary:hover,
+.button_secondary:focus {
+  outline-style: none;
+  background-color: rgba(37 127 234 / 20%);
+}
+
+.button_secondary:active {
+  background-color: #257fea;
+  color: #ffffff;
+}
+
+.button_primary {
+  padding: 12px 75px;
+  background-color: #3f72af;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.button_primary:hover,
+.button_primary:focus {
+  outline-style: none;
+  background-color: #257fea;
+}
+
+.button_primary:active {
+  background-color: #65abff;
+}
+
+.item_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.input_box {
+  position: relative;
+  margin: 10px;
+}
