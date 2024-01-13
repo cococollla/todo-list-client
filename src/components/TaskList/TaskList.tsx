@@ -20,7 +20,11 @@ const TaskList = () => {
         return response.json();
       })
       .then((data) => {
-        setTasks(data);
+        const sortedTasks = data
+          .slice()
+          .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
+
+        setTasks(sortedTasks);
       })
       .catch((error) => {
         console.error("Error fetching tasks:", error.message);
@@ -54,6 +58,8 @@ const TaskList = () => {
 
   const handleDeleteTask = (task: Task) => {
     ApiServices.deleteTask(task.id);
+    const updatedTasks = tasks.filter((t) => t.id !== task.id);
+    setTasks(updatedTasks);
     setDeleteModalOpen(false);
   };
 
