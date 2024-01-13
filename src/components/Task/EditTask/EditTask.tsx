@@ -28,6 +28,14 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
       });
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      setTaskName(task.name.toString());
+      setTaskDescription(task.description.toString());
+      setCategoryId(task.categoryId);
+    }
+  }, [isOpen, task]);
+
   const handleEditTask = () => {
     const editTask: Task = {
       name: taskName,
