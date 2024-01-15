@@ -1,8 +1,9 @@
 import React, { useState, useEffect, ChangeEvent, FC } from "react";
 import Modal from "../../Modal/Modal";
-import ApiServices from "../../../services/ApiServices";
 import CreateTaskProps from "./CreateTask.props";
 import styles from "../../Modal/Modal.module.css";
+import taskStore from "../../Store/TaskStore";
+import Task from "../../../interfaces/Task";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
@@ -27,13 +28,14 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   }, []);
 
   const handleCreateTask = () => {
-    const newTask = {
+    const newTask: Task = {
+      id: 0,
       name: taskName,
       description: taskDescription,
       categoryId: Number(categoryId),
     };
 
-    ApiServices.createTask(newTask);
+    taskStore.addTask(newTask);
     onClose();
   };
 

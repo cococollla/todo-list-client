@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styles from "./Modal.module.css";
-import ModalProps from "./Modal.prps";
+import ModalProps from "./Modal.props";
 
 const Modal: FC<ModalProps> = ({
   isOpen,

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect } from "react";
 import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import EditTask from "../Task/EditTask/EditTask";
-import ApiServices from "../../services/ApiServices";
 import DeleteTask from "../Task/DeleteTask/DeleteTask";
+import taskStore from "../Store/TaskStore";
+import { observer } from "mobx-react-lite";
 
-const TaskList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedTask, setSelectedTAsk] = useState<Task | null>(null);
+export const TaskList = observer(() => {
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
@@ -24,7 +24,7 @@ const TaskList = () => {
           .slice()
           .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
 
-        setTasks(sortedTasks);
+        taskStore.setTasks(sortedTasks);
       })
       .catch((error) => {
         console.error("Error fetching tasks:", error.message);
@@ -32,40 +32,28 @@ const TaskList = () => {
   }, []);
 
   const handleEditClick = (task: Task) => {
-    setSelectedTAsk(task);
+    setSelectedTask(task);
     setEditModalOpen(true);
   };
 
   const handleEditTask = (task: Task) => {
-    ApiServices.editTask(task)
-      .then(() => {
-        setTasks((prevTasks) =>
-          prevTasks.map((prevTask) =>
-            prevTask.id === task.id ? { ...task } : prevTask
-          )
-        );
-        setEditModalOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error editing task:", error.message);
-      });
+    taskStore.editTask(task);
+    setEditModalOpen(false);
   };
 
   const handleDeleteClick = (task: Task) => {
-    setSelectedTAsk(task);
+    setSelectedTask(task);
     setDeleteModalOpen(true);
   };
 
   const handleDeleteTask = (task: Task) => {
-    ApiServices.deleteTask(task.id);
-    const updatedTasks = tasks.filter((t) => t.id !== task.id);
-    setTasks(updatedTasks);
+    taskStore.deleteTask(task);
     setDeleteModalOpen(false);
   };
 
   return (
     <>
-      {tasks.map((task) => (
+      {taskStore.tasks.map((task) => (
         <div key={task.id.toString()} className={styles.item_todo}>
           <div className={styles.todo_content}>
             <div className={styles.todoTitle}>{task.name}</div>
@@ -106,6 +94,6 @@ const TaskList = () => {
       )}
     </>
   );
-};
+});
 
 export default TaskList;
