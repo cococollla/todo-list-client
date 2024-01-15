@@ -15,6 +15,10 @@
   font-size: 18px;
 }
 
+img {
+  margin-left: 10px;
+  cursor: pointer;
+}
 .todo_content {
   overflow-x: hidden;
   text-overflow: ellipsis;
@@ -23,6 +27,8 @@
 }
 
 .todoTitle {
+  display: flex;
+  flex-direction: row;
   font-weight: bold;
   margin-bottom: 10px;
 }

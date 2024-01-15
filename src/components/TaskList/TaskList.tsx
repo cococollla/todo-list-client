@@ -56,22 +56,20 @@ export const TaskList = observer(() => {
       {taskStore.tasks.map((task) => (
         <div key={task.id.toString()} className={styles.item_todo}>
           <div className={styles.todo_content}>
-            <div className={styles.todoTitle}>{task.name}</div>
+            <div className={styles.todoTitle}>
+              <div>{task.name}</div>
+              <img src="svg/folder.svg"></img>
+              <div>Категория {task.categoryId}</div>
+            </div>
             <div className={styles.todo_content}>{task.description}</div>
           </div>
           <div className={styles.button_container}>
-            <button
-              className={styles.edit_button}
-              onClick={() => handleEditClick(task)}
-            >
-              Изменить
-            </button>
-            <button
-              className={styles.delete_button}
-              onClick={() => handleDeleteClick(task)}
-            >
-              Удалить
-            </button>
+            <div onClick={() => handleEditClick(task)}>
+              <img src="svg/edit.svg"></img>
+            </div>
+            <div onClick={() => handleDeleteClick(task)}>
+              <img src="svg/delete.svg" />
+            </div>
           </div>
         </div>
       ))}

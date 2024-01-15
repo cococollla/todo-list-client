@@ -36,7 +36,6 @@
   }
 }
 
-.modal_content input,
 .modal_content select {
   background-color: #dbe2ef;
   width: 300px;
@@ -156,4 +155,48 @@
 .input_box {
   position: relative;
   margin: 10px;
+}
+
+.error_message_hidden {
+  margin-bottom: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0s 0.2s;
+}
+
+.error_message {
+  color: #ec1d1d;
+  margin-bottom: 10px;
+  opacity: 1;
+  transition: opacity 0.2s, visibility 0s;
+}
+
+.required_star {
+  color: #ec1d1d;
+  margin-left: 5px;
+}
+
+.required_field_error {
+  background-color: #dbe2ef;
+  width: 300px;
+  border: 2px solid #ec1d1d;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.required_field {
+  background-color: #dbe2ef;
+  width: 300px;
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

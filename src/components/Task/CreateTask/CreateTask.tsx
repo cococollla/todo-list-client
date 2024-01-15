@@ -10,6 +10,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskDescription, setTaskDescription] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>("");
   const [categories, setCategories] = useState<any[]>([]);
+  const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
@@ -39,6 +40,12 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTaskName(value);
+    setIsTaskNameValid(!!value.trim());
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -49,17 +56,32 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
         <div>
           <div className={styles.item_row}>
             <div className={styles.input_box}>
-              <label htmlFor="taskName">Имя</label>
+              <label className={styles.item_row} htmlFor="taskName">
+                Имя
+                <div className={styles.required_star}>*</div>
+              </label>
               <input
                 id="taskName"
                 name="taskName"
                 type="text"
                 placeholder="Введите имя задачи"
                 value={taskName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setTaskName(e.target.value)
+                onChange={handleTaskNameChange}
+                className={
+                  !isTaskNameValid
+                    ? `${styles.required_field_error}`
+                    : `${styles.required_field}`
                 }
               />
+              <div
+                className={
+                  isTaskNameValid
+                    ? `${styles.error_message_hidden}`
+                    : `${styles.error_message}`
+                }
+              >
+                Это поле обязательное
+              </div>
             </div>
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>
@@ -97,6 +119,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
         </div>
       }
       onCreateTask={handleCreateTask}
+      isCreateTaskDisabled={!isTaskNameValid}
     />
   );
 };

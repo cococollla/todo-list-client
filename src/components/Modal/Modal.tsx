@@ -9,6 +9,7 @@ const Modal: FC<ModalProps> = ({
   buttonText,
   contentComponent,
   onCreateTask,
+  isCreateTaskDisabled,
 }) => {
   return (
     <div
@@ -26,6 +27,7 @@ const Modal: FC<ModalProps> = ({
             className={styles.button_primary}
             type="button"
             onClick={() => onCreateTask()}
+            disabled={isCreateTaskDisabled}
           >
             {buttonText}
           </button>

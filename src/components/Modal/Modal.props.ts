@@ -8,6 +8,7 @@ interface ModalProps {
   buttonText: string;
   contentComponent: ReactNode;
   onCreateTask: (task?: Task) => void;
+  isCreateTaskDisabled: boolean;
 }
 
 export default ModalProps;

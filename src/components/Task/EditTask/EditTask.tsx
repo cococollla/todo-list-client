@@ -11,6 +11,7 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
   );
   const [categoryId, setCategoryId] = useState<number>(task.categoryId);
   const [categories, setCategories] = useState<any[]>([]);
+  const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
@@ -33,6 +34,7 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
       setTaskName(task.name.toString());
       setTaskDescription(task.description.toString());
       setCategoryId(task.categoryId);
+      setIsTaskNameValid(true);
     }
   }, [isOpen, task]);
 
@@ -47,6 +49,12 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
     onEditTask(editTask);
   };
 
+  const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTaskName(value);
+    setIsTaskNameValid(!!value.trim());
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -57,17 +65,32 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
         <div>
           <div className={styles.item_row}>
             <div className={styles.input_box}>
-              <label htmlFor="taskName">Имя</label>
+              <label className={styles.item_row} htmlFor="taskName">
+                Имя
+                <div className={styles.required_star}>*</div>
+              </label>
               <input
                 id="taskName"
                 name="taskName"
                 type="text"
                 placeholder="Введите имя задачи"
                 value={taskName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setTaskName(e.target.value)
+                onChange={handleTaskNameChange}
+                className={
+                  !isTaskNameValid
+                    ? `${styles.required_field_error}`
+                    : `${styles.required_field}`
                 }
               />
+              <div
+                className={
+                  isTaskNameValid
+                    ? `${styles.error_message_hidden}`
+                    : `${styles.error_message}`
+                }
+              >
+                Это поле обязательное
+              </div>
             </div>
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>
@@ -105,6 +128,7 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
         </div>
       }
       onCreateTask={() => handleEditTask()}
+      isCreateTaskDisabled={!isTaskNameValid}
     />
   );
 };

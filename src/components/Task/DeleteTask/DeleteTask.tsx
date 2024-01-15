@@ -21,6 +21,7 @@ const DeleteTask: FC<DeleteTaskProps> = ({
         </div>
       }
       onCreateTask={() => onDeleteTask(task)}
+      isCreateTaskDisabled={false}
     />
   );
 };
