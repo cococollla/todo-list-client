@@ -3,7 +3,7 @@ import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import EditTask from "../Task/EditTask/EditTask";
 import DeleteTask from "../Task/DeleteTask/DeleteTask";
-import taskStore from "../Store/TaskStore";
+import taskStore from "../../store/TaskStore";
 import { observer } from "mobx-react-lite";
 
 export const TaskList = observer(() => {

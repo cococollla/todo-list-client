@@ -5,7 +5,7 @@ class ApiServices {
     name: string;
     description: string;
     categoryId: number;
-  }) {
+  }): Promise<Task> {
     return fetch("http://localhost:8089/api/ToDoList/AddTask", {
       method: "POST",
       headers: {
@@ -17,9 +17,11 @@ class ApiServices {
         if (!response.ok) {
           throw new Error("Failed to add task");
         }
+        return response.json();
       })
       .catch((error) => {
         console.error("Error creating task:", error.message);
+        throw error;
       });
   }
 

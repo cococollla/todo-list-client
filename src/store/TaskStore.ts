@@ -1,9 +1,9 @@
 import { action, makeAutoObservable, observable } from "mobx";
-import Task from "../../interfaces/Task";
-import ApiServices from "../../services/ApiServices";
+import Task from "../interfaces/Task";
+import ApiServices from "../services/ApiServices";
 
 class TaskStore {
-  @observable tasks: Task[] = [];
+  tasks: Task[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -13,9 +13,11 @@ class TaskStore {
     this.tasks = tasks;
   }
 
-  addTask(task: Task) {
-    ApiServices.createTask(task);
-    this.tasks.push(task);
+  async addTask(task: Task) {
+    const newTask: Task = await ApiServices.createTask(task);
+    if (newTask.id !== 0) {
+      this.tasks.push(newTask);
+    }
   }
 
   editTask(editedTask: Task) {
@@ -33,5 +35,4 @@ class TaskStore {
   }
 }
 
-const taskStore = new TaskStore();
-export default taskStore;
+export default new TaskStore();

@@ -2,8 +2,9 @@ import React, { useState, useEffect, ChangeEvent, FC } from "react";
 import Modal from "../../Modal/Modal";
 import CreateTaskProps from "./CreateTask.props";
 import styles from "../../Modal/Modal.module.css";
-import taskStore from "../../Store/TaskStore";
+import taskStore from "../../../store/TaskStore";
 import Task from "../../../interfaces/Task";
+import RequiredFiled from "../../RequiredField/RequiredFiled";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
@@ -27,6 +28,15 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
         console.error("Error fetching categories:", error.message);
       });
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTaskName("");
+      setTaskDescription("");
+      setCategoryId("");
+      setIsTaskNameValid(false);
+    }
+  }, [isOpen]);
 
   const handleCreateTask = () => {
     const newTask: Task = {
@@ -55,34 +65,12 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       contentComponent={
         <div>
           <div className={styles.item_row}>
-            <div className={styles.input_box}>
-              <label className={styles.item_row} htmlFor="taskName">
-                Имя
-                <div className={styles.required_star}>*</div>
-              </label>
-              <input
-                id="taskName"
-                name="taskName"
-                type="text"
-                placeholder="Введите имя задачи"
-                value={taskName}
-                onChange={handleTaskNameChange}
-                className={
-                  !isTaskNameValid
-                    ? `${styles.required_field_error}`
-                    : `${styles.required_field}`
-                }
-              />
-              <div
-                className={
-                  isTaskNameValid
-                    ? `${styles.error_message_hidden}`
-                    : `${styles.error_message}`
-                }
-              >
-                Это поле обязательное
-              </div>
-            </div>
+            <RequiredFiled
+              value={taskName}
+              isValueValid={isTaskNameValid}
+              onValueChange={handleTaskNameChange}
+              placeholderValue="Введите имя задачи"
+            />
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>
               <select

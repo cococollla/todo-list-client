@@ -7,7 +7,7 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   animation-name: animate;
-  animation-duration: 0.2s;
+  animation-duration: 0.4s;
 }
 
 .modal.open {
@@ -161,14 +161,14 @@
   margin-bottom: 10px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s, visibility 0s 0.2s;
+  transition: opacity 0.4s, visibility 0.2s;
 }
 
 .error_message {
   color: #ec1d1d;
   margin-bottom: 10px;
   opacity: 1;
-  transition: opacity 0.2s, visibility 0s;
+  transition: opacity 0.4s, visibility 0s;
 }
 
 .required_star {
