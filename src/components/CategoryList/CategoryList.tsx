@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Category from "../../interfaces/Category";
 import categoryStore from "../../store/CategoryStore";
-import styles from "../Modal/Modal.module.css";
+import styles from "./CategotyList.module.css";
 
 const CategotyList = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -43,9 +43,13 @@ const CategotyList = () => {
   return (
     <>
       {categoryStore.categories.map((category) => (
-        <div key={category.id.toString()} className={styles.item_todo}>
-          <div className={styles.todoTitle}>{category.name}</div>
-          <div className={styles.todo_content}>{category.description}</div>
+        <div key={category.id.toString()} className={styles.item_category}>
+          <div>
+            <div className={styles.category_title}>{category.name}</div>
+            <div className={styles.category_content}>
+              {category.description}
+            </div>
+          </div>
           <div className={styles.button_container}>
             <div onClick={() => handleEditClick(category)}>
               <img src="svg/edit.svg"></img>

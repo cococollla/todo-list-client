@@ -1,4 +1,4 @@
-.item_todo {
+.item_category {
   width: 50%;
   padding: 10px;
   margin: 15px auto;
@@ -18,16 +18,14 @@ img {
   margin-left: 10px;
   cursor: pointer;
 }
-.todo_content {
+.category_content {
   overflow-x: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
   color: #000000;
 }
 
-.todoTitle {
-  display: flex;
-  flex-direction: row;
+.category_title {
   font-weight: bold;
   margin-bottom: 10px;
 }

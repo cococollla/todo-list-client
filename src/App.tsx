@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import TaskList from "./components/TaskList/TaskList";
 import CreateTask from "./components/Task/CreateTask/CreateTask";
@@ -17,15 +17,14 @@ const App: FC = () => {
   };
 
   return (
-    <Router>
-      <div className="App">
-        <Header openCreateTaskModal={openCreateTaskModal} />
-        <Routes>
-          <Route path="/tasks" element={<TaskList />} />
-        </Routes>
-        <CreateTask isOpen={isTaskModalOpen} onClose={closeCreateTaskModal} />
-      </div>
-    </Router>
+    <div className="App">
+      <Header openCreateTaskModal={openCreateTaskModal} />
+      <Routes>
+        <Route path="/tasks" element={<TaskList />} />
+        <Route path="/categories" element={<CategotyList />} />
+      </Routes>
+      <CreateTask isOpen={isTaskModalOpen} onClose={closeCreateTaskModal} />
+    </div>
   );
 };
 
