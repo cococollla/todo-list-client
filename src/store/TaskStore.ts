@@ -33,6 +33,26 @@ class TaskStore {
     const deletedTasks = this.tasks.filter((t) => t.id !== task.id);
     this.setTasks(deletedTasks);
   }
+
+  fetchTasks() {
+    fetch("http://localhost:8089/api/ToDoList/GetTasks")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch tasks");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const sortedTasks = data
+          .slice()
+          .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
+
+        this.setTasks(sortedTasks);
+      })
+      .catch((error) => {
+        console.error("Error fetching tasks:", error.message);
+      });
+  }
 }
 
 export default new TaskStore();

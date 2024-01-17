@@ -35,6 +35,22 @@ class CategoryStore {
     );
     this.setCategories(deletedCategories);
   }
+
+  fetchCategories() {
+    fetch("http://localhost:8089/api/ToDoList/GetCategories")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch category");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        this.setCategories(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error.message);
+      });
+  }
 }
 
 export default new CategoryStore();

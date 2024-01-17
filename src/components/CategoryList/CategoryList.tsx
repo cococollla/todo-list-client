@@ -14,23 +14,7 @@ export const CategotyList = observer(() => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("http://localhost:8089/api/ToDoList/GetCategories")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch category");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const sortedCategories = data
-          .slice()
-          .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
-
-        categoryStore.setCategories(sortedCategories);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error.message);
-      });
+    categoryStore.fetchCategories();
   }, []);
 
   const handleEditClick = (category: Category) => {

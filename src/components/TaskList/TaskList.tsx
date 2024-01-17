@@ -1,12 +1,11 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, useCallback } from "react";
 import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import EditTask from "../Task/EditTask/EditTask";
 import DeleteTask from "../Task/DeleteTask/DeleteTask";
 import taskStore from "../../store/TaskStore";
 import { observer } from "mobx-react-lite";
-import TaskListProps from "./TaskListProps";
-import CreateTask from "../Task/CreateTask/CreateTask";
+import categoryStore from "../../store/CategoryStore";
 
 export const TaskList = observer(() => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -14,23 +13,26 @@ export const TaskList = observer(() => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("http://localhost:8089/api/ToDoList/GetTasks")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const sortedTasks = data
-          .slice()
-          .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
+    taskStore.fetchTasks();
+    categoryStore.fetchCategories();
+  }, []);
 
-        taskStore.setTasks(sortedTasks);
-      })
-      .catch((error) => {
-        console.error("Error fetching tasks:", error.message);
-      });
+  const getCategoryName = (categoryId: number) => {
+    const category = categoryStore.categories.find(
+      (cat) => cat.id === categoryId
+    );
+    return category ? category.name : "";
+  };
+
+  const taskCategory = useCallback((categoryId: number) => {
+    const categoryName = getCategoryName(categoryId);
+    return !categoryName ? (
+      ""
+    ) : (
+      <div className={styles.item_row}>
+        <img src="svg/folder.svg"></img> <div>{categoryName}</div>
+      </div>
+    );
   }, []);
 
   const handleEditClick = (task: Task) => {
@@ -60,8 +62,7 @@ export const TaskList = observer(() => {
           <div className={styles.todo_content}>
             <div className={styles.todoTitle}>
               <div>{task.name}</div>
-              <img src="svg/folder.svg"></img>
-              <div>Категория {task.categoryId}</div>
+              {taskCategory(task.categoryId)}
             </div>
             <div className={styles.todo_content}>{task.description}</div>
           </div>

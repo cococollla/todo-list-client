@@ -15,9 +15,10 @@
 }
 
 img {
-  margin-left: 10px;
+  margin-right: 5px;
   cursor: pointer;
 }
+
 .todo_content {
   overflow-x: hidden;
   text-overflow: ellipsis;
@@ -35,4 +36,9 @@ img {
 .button_container {
   display: flex;
   margin-left: 10px;
+}
+
+.item_row {
+  display: flex;
+  flex-direction: row;
 }
