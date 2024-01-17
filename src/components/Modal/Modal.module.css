@@ -166,7 +166,7 @@
 
 .error_message {
   color: #ec1d1d;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   opacity: 1;
   transition: opacity 0.4s, visibility 0s;
 }
@@ -176,20 +176,10 @@
   margin-left: 5px;
 }
 
+.required_field_task,
 .required_field_task_invalid {
   background-color: #dbe2ef;
   width: 300px;
-  border: 2px solid #ec1d1d;
-  border-radius: 4px;
-  padding: 10px;
-  font-family: "Roboto", sans-serif;
-  font-size: 20px;
-}
-
-.required_field_task {
-  background-color: #dbe2ef;
-  width: 300px;
-  border: 2px solid #3f72af;
   border-radius: 4px;
   padding: 10px;
   font-family: "Roboto", sans-serif;
@@ -201,22 +191,22 @@ button:disabled {
   pointer-events: none;
 }
 
-.required_field_category {
+.required_field_category,
+.required_field_category_invalid {
   background-color: #dbe2ef;
   width: 700px;
-  border: 2px solid #3f72af;
   border-radius: 4px;
   padding: 15px;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
 }
 
-.required_field_category_invalid {
-  background-color: #dbe2ef;
-  width: 700px;
+.required_field_category_invalid,
+.required_field_task_invalid {
   border: 2px solid #ec1d1d;
-  border-radius: 4px;
-  padding: 15px;
-  font-family: "Roboto", sans-serif;
-  font-size: 20px;
+}
+
+.required_field_category,
+.required_field_task {
+  border: 2px solid #3f72af;
 }

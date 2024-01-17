@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import EditTask from "../Task/EditTask/EditTask";

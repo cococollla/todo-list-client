@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useMatch } from "react-router-dom";
 import Header from "./components/Header/Header";
 import TaskList from "./components/TaskList/TaskList";
 import CreateTask from "./components/Task/CreateTask/CreateTask";
@@ -8,6 +8,7 @@ import CreateCategory from "./components/Category/CreateCategory/CreateCategory"
 
 const App: FC = () => {
   const [isTaskModalOpen, setTaskModalOpen] = useState<boolean>(false);
+  const linkToTasks = useMatch("tasks");
 
   const openCreateTaskModal = () => {
     setTaskModalOpen(true);
@@ -17,7 +18,6 @@ const App: FC = () => {
     setTaskModalOpen(false);
   };
 
-  const linkToTasks = useLocation().pathname.includes("tasks");
   return (
     <div className="App">
       <Header

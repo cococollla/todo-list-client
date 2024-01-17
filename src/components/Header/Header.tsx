@@ -1,7 +1,8 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./Header.module.css";
 import HeaderProps from "./Header.props";
+import CustomLink from "../CustomLink/CustomLink";
 
 const Header: FC<HeaderProps> = ({ openCreateModal, navLink }) => {
   const handleCreateClick = () => {
@@ -15,13 +16,9 @@ const Header: FC<HeaderProps> = ({ openCreateModal, navLink }) => {
           ToDo List
         </label>
         <div>
-          <Link to="/tasks" className={styles.nav_link}>
-            Задачи
-          </Link>
+          <CustomLink to="/tasks" value="Задачи" />
           <label className={styles.separator}>|</label>
-          <Link to="/categories" className={styles.nav_link}>
-            Категории
-          </Link>
+          <CustomLink to="/categories" value="Категории" />
         </div>
       </div>
       <div>
