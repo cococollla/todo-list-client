@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import Category from "../../interfaces/Category";
 import categoryStore from "../../store/CategoryStore";
 import styles from "./CategotyList.module.css";
+import { observer } from "mobx-react";
+import EditCategory from "../Category/EditCategory/EditCategory";
+import DelteCategory from "../Category/DeleteCategory/DeleteCategory";
 
-const CategotyList = () => {
+export const CategotyList = observer(() => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
@@ -23,7 +26,7 @@ const CategotyList = () => {
           .slice()
           .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
 
-        categoryStore.setCategory(sortedCategories);
+        categoryStore.setCategories(sortedCategories);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error.message);
@@ -36,8 +39,18 @@ const CategotyList = () => {
   };
 
   const handleEditTask = (category: Category) => {
-    // categoryStore.editCategory(category)
+    categoryStore.editCategory(category);
     setEditModalOpen(false);
+  };
+
+  const handleDeleteClick = (category: Category) => {
+    setSelectedCategory(category);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteCategory = (category: Category) => {
+    categoryStore.deleteCategory(category);
+    setDeleteModalOpen(false);
   };
 
   return (
@@ -52,16 +65,33 @@ const CategotyList = () => {
           </div>
           <div className={styles.button_container}>
             <div onClick={() => handleEditClick(category)}>
-              <img src="svg/edit.svg"></img>
+              <img src="svg/edit.svg" />
             </div>
-            <div>
+            <div onClick={() => handleDeleteClick(category)}>
               <img src="svg/delete.svg" />
             </div>
           </div>
         </div>
       ))}
+
+      {selectedCategory && (
+        <EditCategory
+          isOpen={isEditModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          category={selectedCategory}
+          onEditCategory={handleEditTask}
+        />
+      )}
+      {selectedCategory && (
+        <DelteCategory
+          isOpen={isDeleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          category={selectedCategory}
+          onDeleteCategory={handleDeleteCategory}
+        />
+      )}
     </>
   );
-};
+});
 
 export default CategotyList;

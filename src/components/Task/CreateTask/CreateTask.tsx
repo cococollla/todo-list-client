@@ -70,6 +70,8 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
               isValueValid={isTaskNameValid}
               onValueChange={handleTaskNameChange}
               placeholderValue="Введите имя задачи"
+              styleClassValid={styles.required_field_task}
+              styleClassInvalid={styles.required_field_task_invalid}
             />
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>

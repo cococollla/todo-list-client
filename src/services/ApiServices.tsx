@@ -1,4 +1,3 @@
-import { error } from "console";
 import Category from "../interfaces/Category";
 import Task from "../interfaces/Task";
 
@@ -80,6 +79,44 @@ class ApiServices {
       })
       .catch((error) => {
         console.error("Error creating task:", error.message);
+      });
+  }
+
+  static editCategory(editedCategory: Category) {
+    return fetch("http://localhost:8089/api/ToDoList/UpdateCategory", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editedCategory),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to edit task");
+        }
+      })
+      .catch((error) => {
+        console.error("Error edit task:", error.message);
+      });
+  }
+
+  static deleteCategory(categoryId: number) {
+    return fetch(
+      `http://localhost:8089/api/ToDoList/RemoveCategory/${categoryId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to remove task");
+        }
+      })
+      .catch((error) => {
+        console.error("Error removing task:", error.message);
       });
   }
 }

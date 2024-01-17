@@ -7,6 +7,8 @@ const RequiredFiled: FC<RequiredFieldProps> = ({
   onValueChange,
   placeholderValue,
   isValueValid,
+  styleClassValid,
+  styleClassInvalid
 }) => {
   return (
     <>
@@ -22,9 +24,7 @@ const RequiredFiled: FC<RequiredFieldProps> = ({
           value={value}
           onChange={onValueChange}
           className={
-            !isValueValid
-              ? `${styles.required_field_error}`
-              : `${styles.required_field}`
+            !isValueValid ? `${styleClassInvalid}` : `${styleClassValid}`
           }
         ></input>
         <div

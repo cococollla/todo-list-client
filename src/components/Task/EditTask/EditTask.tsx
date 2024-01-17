@@ -32,12 +32,12 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTaskName(task.name.toString());
-      setTaskDescription(task.description.toString());
+      setTaskName(task.name);
+      setTaskDescription(task.description);
       setCategoryId(task.categoryId);
       setIsTaskNameValid(true);
     }
-  }, [isOpen, task]);
+  }, [isOpen]);
 
   const handleEditTask = () => {
     const editTask: Task = {
@@ -70,6 +70,8 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
               isValueValid={isTaskNameValid}
               onValueChange={handleTaskNameChange}
               placeholderValue="Введите имя задачи"
+              styleClassValid={styles.required_field_task}
+              styleClassInvalid={styles.required_field_task_invalid}
             />
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>

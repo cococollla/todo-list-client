@@ -9,7 +9,7 @@ class CategoryStore {
     makeAutoObservable(this);
   }
 
-  setCategory(categories: Category[]) {
+  setCategories(categories: Category[]) {
     this.categories = categories;
   }
 
@@ -18,6 +18,22 @@ class CategoryStore {
     if (newCategory.id !== 0) {
       this.categories.push(newCategory);
     }
+  }
+
+  editCategory(editedCategory: Category) {
+    ApiServices.editCategory(editedCategory).then(() => {
+      this.categories = this.categories.map((category) =>
+        category.id === editedCategory.id ? { ...editedCategory } : category
+      );
+    });
+  }
+
+  deleteCategory(category: Category) {
+    ApiServices.deleteCategory(category.id);
+    const deletedCategories = this.categories.filter(
+      (c) => c.id !== category.id
+    );
+    this.setCategories(deletedCategories);
   }
 }
 

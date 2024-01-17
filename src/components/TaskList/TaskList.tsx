@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import EditTask from "../Task/EditTask/EditTask";
 import DeleteTask from "../Task/DeleteTask/DeleteTask";
 import taskStore from "../../store/TaskStore";
 import { observer } from "mobx-react-lite";
+import TaskListProps from "./TaskListProps";
+import CreateTask from "../Task/CreateTask/CreateTask";
 
 export const TaskList = observer(() => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);

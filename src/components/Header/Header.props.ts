@@ -1,5 +1,6 @@
 interface HeaderProps {
-  openCreateTaskModal: () => void;
+  openCreateModal: () => void;
+  navLink: string;
 }
 
 export default HeaderProps;

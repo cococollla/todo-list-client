@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
 import HeaderProps from "./Header.props";
 
-const Header: FC<HeaderProps> = ({ openCreateTaskModal }) => {
-  const handleCreateTaskClick = () => {
-    openCreateTaskModal();
+const Header: FC<HeaderProps> = ({ openCreateModal, navLink }) => {
+  const handleCreateClick = () => {
+    openCreateModal();
   };
 
   return (
@@ -25,9 +25,9 @@ const Header: FC<HeaderProps> = ({ openCreateTaskModal }) => {
         </div>
       </div>
       <div>
-        <a className={styles.nav_link} onClick={handleCreateTaskClick}>
-          Добавить задачу
-        </a>
+        <div className={styles.nav_link} onClick={handleCreateClick}>
+          {navLink}
+        </div>
       </div>
     </div>
   );

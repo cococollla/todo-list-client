@@ -176,7 +176,7 @@
   margin-left: 5px;
 }
 
-.required_field_error {
+.required_field_task_invalid {
   background-color: #dbe2ef;
   width: 300px;
   border: 2px solid #ec1d1d;
@@ -186,7 +186,7 @@
   font-size: 20px;
 }
 
-.required_field {
+.required_field_task {
   background-color: #dbe2ef;
   width: 300px;
   border: 2px solid #3f72af;
@@ -199,4 +199,24 @@
 button:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.required_field_category {
+  background-color: #dbe2ef;
+  width: 700px;
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  padding: 15px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.required_field_category_invalid {
+  background-color: #dbe2ef;
+  width: 700px;
+  border: 2px solid #ec1d1d;
+  border-radius: 4px;
+  padding: 15px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
 }
