@@ -6,6 +6,7 @@ import DeleteTask from "../Task/DeleteTask/DeleteTask";
 import taskStore from "../../store/TaskStore";
 import { observer } from "mobx-react-lite";
 import categoryStore from "../../store/CategoryStore";
+import CategoryName from "../CategoryName/CategoryName";
 
 export const TaskList = observer(() => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -15,24 +16,6 @@ export const TaskList = observer(() => {
   useEffect(() => {
     taskStore.fetchTasks();
     categoryStore.fetchCategories();
-  }, []);
-
-  const getCategoryName = (categoryId: number) => {
-    const category = categoryStore.categories.find(
-      (cat) => cat.id === categoryId
-    );
-    return category ? category.name : "";
-  };
-
-  const taskCategory = useCallback((categoryId: number) => {
-    const categoryName = getCategoryName(categoryId);
-    return !categoryName ? (
-      ""
-    ) : (
-      <div className={styles.item_row}>
-        <img src="svg/folder.svg"></img> <div>{categoryName}</div>
-      </div>
-    );
   }, []);
 
   const handleEditClick = (task: Task) => {
@@ -62,7 +45,7 @@ export const TaskList = observer(() => {
           <div className={styles.todo_content}>
             <div className={styles.todoTitle}>
               <div>{task.name}</div>
-              {taskCategory(task.categoryId)}
+              <CategoryName categoryId={task.categoryId} />
             </div>
             <div className={styles.todo_content}>{task.description}</div>
           </div>
