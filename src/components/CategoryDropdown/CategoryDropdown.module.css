@@ -1,0 +1,33 @@
+.dropdown_header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #dbe2ef;
+  width: 300px;
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.category_list {
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.selected {
+  color: #ffff;
+  background-color: #3f72af;
+}
+
+.dropdown_item {
+  cursor: pointer;
+  width: 300px;
+  padding: 10px;
+}
+
+.dropdown_item:hover {
+  color: #000000;
+  background-color: rgba(37, 127, 234, 30%);
+}

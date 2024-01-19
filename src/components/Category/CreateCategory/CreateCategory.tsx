@@ -60,7 +60,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
             <textarea
               id="taskDesc"
               name="taskDesc"
-              placeholder="Введите описание задачи"
+              placeholder="Введите описание категории"
               value={categoryDescription}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setCategoryDescription(e.target.value)

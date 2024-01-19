@@ -4,9 +4,7 @@ import categoryStore from "../../store/CategoryStore";
 import styles from "../TaskList/TaskList.module.css";
 
 const CategoryName: FC<CategoryNameProps> = ({ categoryId }) => {
-  const categoryName = categoryStore.categories.find(
-    (cat) => cat.id === categoryId
-  )?.name;
+  const categoryName = categoryStore.getCategory(categoryId)?.name;
 
   return !categoryName ? null : (
     <div className={styles.item_row}>

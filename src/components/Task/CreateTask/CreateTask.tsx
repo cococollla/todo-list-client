@@ -1,39 +1,25 @@
-import React, { useState, useEffect, ChangeEvent, FC } from "react";
+import { useState, useEffect, ChangeEvent, FC } from "react";
 import Modal from "../../Modal/Modal";
 import CreateTaskProps from "./CreateTask.props";
 import styles from "../../Modal/Modal.module.css";
 import taskStore from "../../../store/TaskStore";
 import Task from "../../../interfaces/Task";
 import RequiredFiled from "../../RequiredField/RequiredFiled";
+import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
+import categoryStore from "../../../store/CategoryStore";
+import Category from "../../../interfaces/Category";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [taskDescription, setTaskDescription] = useState<string>("");
-  const [categoryId, setCategoryId] = useState<string>("");
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categoryId, setCategoryId] = useState<number>(0);
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(false);
-
-  useEffect(() => {
-    fetch("http://localhost:8089/api/ToDoList/GetCategories")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error.message);
-      });
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
       setTaskName("");
       setTaskDescription("");
-      setCategoryId("");
+      setCategoryId(0);
       setIsTaskNameValid(false);
     }
   }, [isOpen]);
@@ -56,6 +42,10 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     setIsTaskNameValid(!!value.trim());
   };
 
+  const handleCategorySelect = (selectedCategory: Category) => {
+    setCategoryId(selectedCategory.id);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -75,23 +65,10 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
             />
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>
-              <select
-                id="taskCategory"
-                name="taskCategory"
-                value={categoryId}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                  setCategoryId(e.target.value)
-                }
-              >
-                <option value="" disabled>
-                  Выберите категорию
-                </option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <CategoryDropdown
+                selectedCategory={undefined}
+                onCategorySelect={handleCategorySelect}
+              />
             </div>
           </div>
           <div className={styles.input_box}>

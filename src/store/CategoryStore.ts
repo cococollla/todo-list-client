@@ -36,6 +36,11 @@ class CategoryStore {
     this.setCategories(deletedCategories);
   }
 
+  getCategory(categoryId: number) {
+    const category = this.categories.find((c) => c.id == categoryId);
+    return category;
+  }
+
   fetchCategories() {
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
       .then((response) => {
