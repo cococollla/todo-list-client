@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import EditTask from "../Task/EditTask/EditTask";
 import DeleteTask from "../Task/DeleteTask/DeleteTask";
-import taskStore from "../Store/TaskStore";
+import taskStore from "../../store/TaskStore";
 import { observer } from "mobx-react-lite";
+import categoryStore from "../../store/CategoryStore";
+import CategoryName from "../CategoryName/CategoryName";
 
 export const TaskList = observer(() => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -12,23 +14,8 @@ export const TaskList = observer(() => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("http://localhost:8089/api/ToDoList/GetTasks")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const sortedTasks = data
-          .slice()
-          .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
-
-        taskStore.setTasks(sortedTasks);
-      })
-      .catch((error) => {
-        console.error("Error fetching tasks:", error.message);
-      });
+    taskStore.fetchTasks();
+    categoryStore.fetchCategories();
   }, []);
 
   const handleEditClick = (task: Task) => {
@@ -58,8 +45,7 @@ export const TaskList = observer(() => {
           <div className={styles.todo_content}>
             <div className={styles.todoTitle}>
               <div>{task.name}</div>
-              <img src="svg/folder.svg"></img>
-              <div>Категория {task.categoryId}</div>
+              <CategoryName categoryId={task.categoryId} />
             </div>
             <div className={styles.todo_content}>{task.description}</div>
           </div>

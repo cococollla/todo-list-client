@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./Header.module.css";
 import HeaderProps from "./Header.props";
+import CustomLink from "../CustomLink/CustomLink";
 
-const Header: FC<HeaderProps> = ({ openCreateTaskModal }) => {
-  const handleCreateTaskClick = () => {
-    openCreateTaskModal();
+const Header: FC<HeaderProps> = ({ openCreateModal, navLink }) => {
+  const handleCreateClick = () => {
+    openCreateModal();
   };
 
   return (
@@ -15,19 +16,15 @@ const Header: FC<HeaderProps> = ({ openCreateTaskModal }) => {
           ToDo List
         </label>
         <div>
-          <Link to="/tasks" className={styles.nav_link}>
-            Задачи
-          </Link>
+          <CustomLink to="/tasks" value="Задачи" />
           <label className={styles.separator}>|</label>
-          <Link to="/categories" className={styles.nav_link}>
-            Категории
-          </Link>
+          <CustomLink to="/categories" value="Категории" />
         </div>
       </div>
       <div>
-        <a className={styles.nav_link} onClick={handleCreateTaskClick}>
-          Добавить задачу
-        </a>
+        <div className={styles.nav_link} onClick={handleCreateClick}>
+          {navLink}
+        </div>
       </div>
     </div>
   );

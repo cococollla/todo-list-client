@@ -22,11 +22,19 @@
   margin: 0 5px;
 }
 
-.nav_link {
+.nav_link,
+.nav_link_active {
   text-decoration: none;
-  color: #dbe2ef;
   font-weight: bold;
   cursor: pointer;
+}
+
+.nav_link_active {
+  color: #ffffff;
+}
+
+.nav_link {
+  color: #dbe2ef;
 }
 
 .nav_link:hover {

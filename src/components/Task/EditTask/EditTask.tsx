@@ -3,6 +3,7 @@ import EditTaskProps from "./EditTask.props";
 import Modal from "../../Modal/Modal";
 import Task from "../../../interfaces/Task";
 import styles from "../../Modal/Modal.module.css";
+import RequiredFiled from "../../RequiredField/RequiredFiled";
 
 const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
   const [taskName, setTaskName] = useState<string>(task.name.toString());
@@ -31,12 +32,12 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTaskName(task.name.toString());
-      setTaskDescription(task.description.toString());
+      setTaskName(task.name);
+      setTaskDescription(task.description);
       setCategoryId(task.categoryId);
       setIsTaskNameValid(true);
     }
-  }, [isOpen, task]);
+  }, [isOpen]);
 
   const handleEditTask = () => {
     const editTask: Task = {
@@ -64,34 +65,14 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
       contentComponent={
         <div>
           <div className={styles.item_row}>
-            <div className={styles.input_box}>
-              <label className={styles.item_row} htmlFor="taskName">
-                Имя
-                <div className={styles.required_star}>*</div>
-              </label>
-              <input
-                id="taskName"
-                name="taskName"
-                type="text"
-                placeholder="Введите имя задачи"
-                value={taskName}
-                onChange={handleTaskNameChange}
-                className={
-                  !isTaskNameValid
-                    ? `${styles.required_field_error}`
-                    : `${styles.required_field}`
-                }
-              />
-              <div
-                className={
-                  isTaskNameValid
-                    ? `${styles.error_message_hidden}`
-                    : `${styles.error_message}`
-                }
-              >
-                Это поле обязательное
-              </div>
-            </div>
+            <RequiredFiled
+              value={taskName}
+              isValueValid={isTaskNameValid}
+              onValueChange={handleTaskNameChange}
+              placeholderValue="Введите имя задачи"
+              styleClassValid={styles.required_field_task}
+              styleClassInvalid={styles.required_field_task_invalid}
+            />
             <div className={styles.input_box}>
               <label htmlFor="taskCategory">Категория</label>
               <select
