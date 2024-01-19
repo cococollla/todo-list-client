@@ -7,7 +7,7 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   animation-name: animate;
-  animation-duration: 0.4s;
+  animation-duration: 0.2s;
 }
 
 .modal.open {
@@ -88,6 +88,8 @@
 }
 
 .title {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 

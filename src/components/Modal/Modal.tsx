@@ -13,12 +13,23 @@ const Modal: FC<ModalProps> = ({
 }) => {
   return (
     <div
+      onClick={onClose}
       className={isOpen ? `${styles.modal} ${styles.open}` : `${styles.modal}`}
     >
-      <div className={styles.modal_content}>
+      <div
+        className={styles.modal_content}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {title && (
           <div className={styles.title}>
-            <span className={styles.taskTitle}>{title}</span>
+            <div>
+              <span className={styles.taskTitle}>{title}</span>
+            </div>
+            <div>
+              <img src="svg/close.svg" onClick={onClose} />
+            </div>
           </div>
         )}
         {contentComponent}

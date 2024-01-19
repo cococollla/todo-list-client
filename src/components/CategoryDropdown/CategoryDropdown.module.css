@@ -11,9 +11,12 @@
 }
 
 .category_list {
+  position: absolute;
   border: 2px solid #3f72af;
   border-radius: 4px;
   margin-top: 10px;
+  z-index: 1;
+  background-color: #dbe2ef;
 }
 
 .selected {
