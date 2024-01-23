@@ -1,5 +1,5 @@
 interface HeaderProps {
-  openCreateModal: () => void;
+  setModalActive: (value: boolean) => void;
   navLink: string;
 }
 

@@ -3,8 +3,9 @@ import CreateCategoryProps from "./CreateCategory.props";
 import Category from "../../../interfaces/Category";
 import CategoryStore from "../../../store/CategoryStore";
 import Modal from "../../Modal/Modal";
-import RequiredFiled from "../../RequiredField/RequiredFiled";
+import RequiredFiled from "../../Input/Input";
 import styles from "../../Modal/Modal.module.css";
+import { CategoryDto } from "../../../interfaces/CategoryDto";
 
 const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
   const [categoryName, setCategoryName] = useState<string>("");
@@ -21,8 +22,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleCreateCategory = () => {
-    const newCategory: Category = {
-      id: 0,
+    const newCategory: CategoryDto = {
       name: categoryName,
       description: categoryDescription,
     };

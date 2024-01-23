@@ -4,10 +4,10 @@ import CreateTaskProps from "./CreateTask.props";
 import styles from "../../Modal/Modal.module.css";
 import taskStore from "../../../store/TaskStore";
 import Task from "../../../interfaces/Task";
-import RequiredFiled from "../../RequiredField/RequiredFiled";
+import RequiredFiled from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
-import categoryStore from "../../../store/CategoryStore";
 import Category from "../../../interfaces/Category";
+import { TaskDto } from "../../../interfaces/TaskDto";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
@@ -24,16 +24,15 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const handleCreateTask = () => {
-    const newTask: Task = {
-      id: 0,
+  const handleCreateTask = async () => {
+    const newTask: TaskDto = {
       name: taskName,
       description: taskDescription,
       categoryId: Number(categoryId),
     };
 
-    taskStore.addTask(newTask);
-    onClose();
+    const id = await taskStore.addTask(newTask);
+    id && onClose();
   };
 
   const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {

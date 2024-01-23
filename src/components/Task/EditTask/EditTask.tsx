@@ -3,7 +3,7 @@ import EditTaskProps from "./EditTask.props";
 import Modal from "../../Modal/Modal";
 import Task from "../../../interfaces/Task";
 import styles from "../../Modal/Modal.module.css";
-import RequiredFiled from "../../RequiredField/RequiredFiled";
+import RequiredFiled from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import categoryStore from "../../../store/CategoryStore";
 import Category from "../../../interfaces/Category";

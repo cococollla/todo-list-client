@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import Task from "../interfaces/Task";
 import ApiServices from "../services/ApiServices";
+import { TaskDto } from "../interfaces/TaskDto";
 
 class TaskStore {
   tasks: Task[] = [];
@@ -13,11 +14,13 @@ class TaskStore {
     this.tasks = tasks;
   }
 
-  async addTask(task: Task) {
+  async addTask(task: TaskDto) {
     const newTask: Task = await ApiServices.createTask(task);
     if (newTask.id !== 0) {
       this.tasks.push(newTask);
+      return newTask.id;
     }
+    return undefined;
   }
 
   editTask(editedTask: Task) {

@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import Category from "../interfaces/Category";
 import ApiServices from "../services/ApiServices";
+import { CategoryDto } from "../interfaces/CategoryDto";
 
 class CategoryStore {
   categories: Category[] = [];
@@ -13,7 +14,7 @@ class CategoryStore {
     this.categories = categories;
   }
 
-  async addCategory(category: Category) {
+  async addCategory(category: CategoryDto) {
     const newCategory: Category = await ApiServices.createCategory(category);
     if (newCategory.id !== 0) {
       this.categories.push(newCategory);

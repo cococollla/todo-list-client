@@ -1,6 +1,6 @@
-interface TaskListProps {
+interface CategoryListProps {
   createActive: boolean;
   setCreateActive: (value: boolean) => void;
 }
 
-export default TaskListProps;
+export default CategoryListProps;

@@ -1,12 +1,12 @@
 import { ChangeEvent } from "react";
 
-interface RequiredFieldProps {
+interface InputProps {
   value: string | undefined;
   onValueChange: (value: ChangeEvent<HTMLInputElement>) => void;
   placeholderValue: string;
   isValueValid: boolean;
   styleClassValid: string;
-  styleClassInvalid: string
+  styleClassInvalid: string;
 }
 
-export default RequiredFieldProps;
+export default InputProps;

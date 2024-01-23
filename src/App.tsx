@@ -7,37 +7,37 @@ import CategotyList from "./components/CategoryList/CategoryList";
 import CreateCategory from "./components/Category/CreateCategory/CreateCategory";
 
 const App: FC = () => {
-  const [isTaskModalOpen, setTaskModalOpen] = useState<boolean>(false);
+  const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
+  const [categoryModalOpen, setCategoryModalOpen] = useState<boolean>(false);
   const linkToTasks = useMatch("tasks");
-
-  const openCreateTaskModal = () => {
-    setTaskModalOpen(true);
-  };
-
-  const closeCreateTaskModal = () => {
-    setTaskModalOpen(false);
-  };
 
   return (
     <div className="App">
       <Header
-        openCreateModal={openCreateTaskModal}
+        setModalActive={linkToTasks ? setTaskModalOpen : setCategoryModalOpen}
         navLink={linkToTasks ? "Добавить задачу" : "Добавить категорию"}
       />
       <Routes>
         <Route path="*" element={<Navigate to="tasks" replace={true} />} />
-        <Route path="/tasks" element={<TaskList />} />
-        <Route path="/categories" element={<CategotyList />} />
-      </Routes>
-      {linkToTasks && (
-        <CreateTask isOpen={isTaskModalOpen} onClose={closeCreateTaskModal} />
-      )}
-      {!linkToTasks && (
-        <CreateCategory
-          isOpen={isTaskModalOpen}
-          onClose={closeCreateTaskModal}
+        <Route
+          path="/tasks"
+          element={
+            <TaskList
+              createActive={taskModalOpen}
+              setCreateActive={setTaskModalOpen}
+            />
+          }
         />
-      )}
+        <Route
+          path="/categories"
+          element={
+            <CategotyList
+              createActive={categoryModalOpen}
+              setCreateActive={setCategoryModalOpen}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 };

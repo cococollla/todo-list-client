@@ -1,13 +1,15 @@
 import Category from "../interfaces/Category";
 import Task from "../interfaces/Task";
 
+const baseUrl = "http://localhost:8089/api/ToDoList";
+
 class ApiServices {
   static createTask(newTask: {
     name: string;
     description: string;
     categoryId: number;
   }): Promise<Task> {
-    return fetch("http://localhost:8089/api/ToDoList/AddTask", {
+    return fetch(baseUrl + "/AddTask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +28,7 @@ class ApiServices {
   }
 
   static editTask(editTask: Task) {
-    return fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
+    return fetch(baseUrl + "/UpdateTask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +46,7 @@ class ApiServices {
   }
 
   static deleteTask(taskId: number) {
-    return fetch(`http://localhost:8089/api/ToDoList/RemoveTask/${taskId}`, {
+    return fetch(baseUrl + `/RemoveTask/${taskId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +66,7 @@ class ApiServices {
     name: string;
     description: string;
   }): Promise<Category> {
-    return fetch("http://localhost:8089/api/ToDoList/AddCategory", {
+    return fetch(baseUrl + "/AddCategory", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +85,7 @@ class ApiServices {
   }
 
   static editCategory(editedCategory: Category) {
-    return fetch("http://localhost:8089/api/ToDoList/UpdateCategory", {
+    return fetch(baseUrl + "/UpdateCategory", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -101,15 +103,12 @@ class ApiServices {
   }
 
   static deleteCategory(categoryId: number) {
-    return fetch(
-      `http://localhost:8089/api/ToDoList/RemoveCategory/${categoryId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    return fetch(baseUrl + `/RemoveCategory/${categoryId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to remove task");

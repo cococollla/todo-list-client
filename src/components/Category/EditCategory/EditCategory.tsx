@@ -2,14 +2,14 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import EditCategoryProps from "./EditCategory.props";
 import Category from "../../../interfaces/Category";
 import Modal from "../../Modal/Modal";
-import RequiredFiled from "../../RequiredField/RequiredFiled";
+import RequiredFiled from "../../Input/Input";
 import styles from "../../Modal/Modal.module.css";
 
 const EditCategory: FC<EditCategoryProps> = ({
   isOpen,
   onClose,
   category,
-  onEditCategory,
+  onEditCategory: onSubmit,
 }) => {
   const [categoryName, setCategoryName] = useState<string>(category.name);
   const [categoryDescription, setCategoryDescription] = useState<string>(
@@ -38,7 +38,7 @@ const EditCategory: FC<EditCategoryProps> = ({
       description: categoryDescription,
     };
 
-    onEditCategory(editCategory);
+    onSubmit(editCategory);
   };
 
   return (

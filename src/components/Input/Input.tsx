@@ -1,14 +1,14 @@
 import { FC, useState } from "react";
-import RequiredFieldProps from "./RequiredField.props";
+import InputProps from "./Input.props";
 import styles from "../Modal/Modal.module.css";
 
-const RequiredFiled: FC<RequiredFieldProps> = ({
+const Input: FC<InputProps> = ({
   value,
   onValueChange,
   placeholderValue,
   isValueValid,
   styleClassValid,
-  styleClassInvalid
+  styleClassInvalid,
 }) => {
   return (
     <>
@@ -41,4 +41,4 @@ const RequiredFiled: FC<RequiredFieldProps> = ({
   );
 };
 
-export default RequiredFiled;
+export default Input;
