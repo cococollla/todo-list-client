@@ -22,6 +22,8 @@ const DeleteTask: FC<DeleteTaskProps> = ({
       }
       onCreateTask={() => onDeleteTask(task)}
       isCreateTaskDisabled={false}
+      isLoading={null}
+      error={null}
     />
   );
 };

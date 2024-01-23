@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styles from "./Modal.module.css";
 import ModalProps from "./Modal.props";
+import LoadingSpinner from "../LoadingSpinnner/LoadingSpinner";
 
 const Modal: FC<ModalProps> = ({
   isOpen,
@@ -10,6 +11,8 @@ const Modal: FC<ModalProps> = ({
   contentComponent,
   onCreateTask,
   isCreateTaskDisabled,
+  isLoading,
+  error,
 }) => {
   return (
     <div
@@ -33,6 +36,7 @@ const Modal: FC<ModalProps> = ({
           </div>
         )}
         {contentComponent}
+        {error && <div className={styles.modal_error}>{error}</div>}
         <div className={styles.button_container}>
           <button
             className={styles.button_primary}
@@ -40,7 +44,7 @@ const Modal: FC<ModalProps> = ({
             onClick={() => onCreateTask()}
             disabled={isCreateTaskDisabled}
           >
-            {buttonText}
+            {isLoading ? <LoadingSpinner /> : buttonText}
           </button>
           <button
             className={styles.button_secondary}

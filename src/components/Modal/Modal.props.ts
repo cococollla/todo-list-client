@@ -9,6 +9,8 @@ interface ModalProps {
   contentComponent: ReactNode;
   onCreateTask: (task?: Task) => void;
   isCreateTaskDisabled: boolean;
+  isLoading: boolean | null;
+  error: string | null;
 }
 
 export default ModalProps;

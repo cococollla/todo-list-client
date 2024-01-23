@@ -14,6 +14,8 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskDescription, setTaskDescription] = useState<string>("");
   const [categoryId, setCategoryId] = useState<number>(0);
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -25,14 +27,21 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleCreateTask = async () => {
-    const newTask: TaskDto = {
-      name: taskName,
-      description: taskDescription,
-      categoryId: Number(categoryId),
-    };
+    setIsLoading(true);
+    try {
+      const newTask: TaskDto = {
+        name: taskName,
+        description: taskDescription,
+        categoryId: Number(categoryId),
+      };
 
-    const id = await taskStore.addTask(newTask);
-    id && onClose();
+      const id = await taskStore.addTask(newTask);
+      id && onClose();
+    } catch (error) {
+      setError("Ошибка при создании задачи");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +95,8 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       }
       onCreateTask={handleCreateTask}
       isCreateTaskDisabled={!isTaskNameValid}
+      isLoading={isLoading}
+      error={error}
     />
   );
 };

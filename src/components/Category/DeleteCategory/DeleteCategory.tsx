@@ -22,6 +22,8 @@ const DelteCategory: FC<DeleteCategoryProps> = ({
       }
       onCreateTask={() => onDeleteCategory(category)}
       isCreateTaskDisabled={false}
+      isLoading={null}
+      error={null}
     />
   );
 };

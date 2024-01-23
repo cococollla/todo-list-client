@@ -71,6 +71,8 @@ const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
       }
       onCreateTask={handleCreateCategory}
       isCreateTaskDisabled={!isCategoryNameValid}
+      isLoading={null}
+      error={null}
     />
   );
 };

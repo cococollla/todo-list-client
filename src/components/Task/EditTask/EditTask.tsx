@@ -87,6 +87,8 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task, onEditTask }) => {
       }
       onCreateTask={() => handleEditTask()}
       isCreateTaskDisabled={!isTaskNameValid}
+      isLoading={null}
+      error={null}
     />
   );
 };

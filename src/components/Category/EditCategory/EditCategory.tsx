@@ -75,6 +75,8 @@ const EditCategory: FC<EditCategoryProps> = ({
       }
       onCreateTask={() => handleEditCategory()}
       isCreateTaskDisabled={!isCategoryNameValid}
+      isLoading={null}
+      error={null}
     />
   );
 };
