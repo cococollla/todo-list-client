@@ -3,7 +3,6 @@ import Modal from "../../Modal/Modal";
 import CreateTaskProps from "./CreateTask.props";
 import styles from "../../Modal/Modal.module.css";
 import taskStore from "../../../store/TaskStore";
-import Task from "../../../interfaces/Task";
 import RequiredFiled from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import Category from "../../../interfaces/Category";
@@ -23,6 +22,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       setTaskDescription("");
       setCategoryId(0);
       setIsTaskNameValid(false);
+      setError(null);
     }
   }, [isOpen]);
 

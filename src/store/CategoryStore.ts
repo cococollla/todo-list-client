@@ -1,9 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import Category from "../interfaces/Category";
-import ApiServices from "../services/ApiServices";
 import { CategoryDto } from "../interfaces/CategoryDto";
+import CategoryApiService from "../services/CategoryApiService";
 
 class CategoryStore {
+  categoryApiService = new CategoryApiService();
+
   categories: Category[] = [];
 
   constructor() {
@@ -15,14 +17,16 @@ class CategoryStore {
   }
 
   async addCategory(category: CategoryDto) {
-    const newCategory: Category = await ApiServices.createCategory(category);
+    const newCategory: Category = await this.categoryApiService.createCategory(
+      category
+    );
     if (newCategory.id !== 0) {
       this.categories.push(newCategory);
     }
   }
 
   editCategory(editedCategory: Category) {
-    ApiServices.editCategory(editedCategory).then(() => {
+    this.categoryApiService.editCategory(editedCategory).then(() => {
       this.categories = this.categories.map((category) =>
         category.id === editedCategory.id ? { ...editedCategory } : category
       );
@@ -30,7 +34,7 @@ class CategoryStore {
   }
 
   deleteCategory(category: Category) {
-    ApiServices.deleteCategory(category.id);
+    this.categoryApiService.deleteCategory(category.id);
     const deletedCategories = this.categories.filter(
       (c) => c.id !== category.id
     );

@@ -1,9 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import Task from "../interfaces/Task";
-import ApiServices from "../services/ApiServices";
 import { TaskDto } from "../interfaces/TaskDto";
+import TaskApiService from "../services/TaskApiService";
 
 class TaskStore {
+  taskApiService = new TaskApiService();
   tasks: Task[] = [];
 
   constructor() {
@@ -15,7 +16,7 @@ class TaskStore {
   }
 
   async addTask(task: TaskDto) {
-    const newTask: Task = await ApiServices.createTask(task);
+    const newTask: Task = await this.taskApiService.createTask(task);
     if (newTask.id !== 0) {
       this.tasks.push(newTask);
       return newTask.id;
@@ -24,7 +25,7 @@ class TaskStore {
   }
 
   editTask(editedTask: Task) {
-    ApiServices.editTask(editedTask).then(() => {
+    this.taskApiService.editTask(editedTask).then(() => {
       this.tasks = this.tasks.map((task) =>
         task.id === editedTask.id ? { ...editedTask } : task
       );
@@ -32,7 +33,7 @@ class TaskStore {
   }
 
   deleteTask(task: Task) {
-    ApiServices.deleteTask(task.id);
+    this.taskApiService.deleteTask(task.id);
     const deletedTasks = this.tasks.filter((t) => t.id !== task.id);
     this.setTasks(deletedTasks);
   }
