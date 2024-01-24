@@ -4,7 +4,6 @@ interface EditTaskProps {
   isOpen: boolean;
   onClose: () => void;
   task: Task;
-  onEditTask: (task: Task) => void;
 }
 
 export default EditTaskProps;

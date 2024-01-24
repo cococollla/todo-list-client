@@ -24,12 +24,16 @@ class TaskStore {
     return undefined;
   }
 
-  editTask(editedTask: Task) {
-    this.taskApiService.editTask(editedTask).then(() => {
+  async editTask(editedTask: Task) {
+    const resultUpdate: Task = await this.taskApiService.editTask(editedTask);
+    if (resultUpdate.id === editedTask.id) {
       this.tasks = this.tasks.map((task) =>
         task.id === editedTask.id ? { ...editedTask } : task
       );
-    });
+      return resultUpdate.id;
+    }
+
+    return undefined;
   }
 
   deleteTask(task: Task) {

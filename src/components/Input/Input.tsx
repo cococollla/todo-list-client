@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import InputProps from "./Input.props";
-import styles from "../Modal/Modal.module.css";
+import styles from "./Input.module.css";
 
 const Input: FC<InputProps> = ({
   value,

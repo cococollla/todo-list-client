@@ -10,7 +10,7 @@ class TaskApiService extends BaseApiService {
     return this.request("/AddTask", "POST", newTask);
   }
 
-  async editTask(editedTask: Task) {
+  async editTask(editedTask: Task): Promise<Task> {
     return this.request("/UpdateTask", "POST", editedTask);
   }
 

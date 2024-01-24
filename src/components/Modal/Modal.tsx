@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styles from "./Modal.module.css";
 import ModalProps from "./Modal.props";
-import LoadingSpinner from "../LoadingSpinnner/LoadingSpinner";
+import LoadingSpinner from "../../UiKit/LoadingSpinner/LoadingSpinner";
 
 const Modal: FC<ModalProps> = ({
   isOpen,

@@ -26,11 +26,6 @@ export const TaskList: FC<TaskListProps> = observer(
       setEditModalOpen(true);
     };
 
-    const handleEditTask = (task: Task) => {
-      taskStore.editTask(task);
-      setEditModalOpen(false);
-    };
-
     const handleDeleteClick = (task: Task) => {
       setSelectedTask(task);
       setDeleteModalOpen(true);
@@ -72,7 +67,6 @@ export const TaskList: FC<TaskListProps> = observer(
             isOpen={isEditModalOpen}
             onClose={() => setEditModalOpen(false)}
             task={selectedTask}
-            onEditTask={handleEditTask}
           />
         )}
         {selectedTask && (

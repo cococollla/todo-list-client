@@ -1,12 +1,12 @@
-import { useState, useEffect, ChangeEvent, FC } from "react";
-import Modal from "../../Modal/Modal";
-import CreateTaskProps from "./CreateTask.props";
-import styles from "../../Modal/Modal.module.css";
-import taskStore from "../../../store/TaskStore";
-import RequiredFiled from "../../Input/Input";
+import { FC, useState, useEffect, ChangeEvent } from "react";
+import MainPopup from "../../../UiKit/MainPopup/MainPopup";
+import RequiredField from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import Category from "../../../interfaces/Category";
 import { TaskDto } from "../../../interfaces/TaskDto";
+import taskStore from "../../../store/TaskStore";
+import styles from "./CreateTask.module.css";
+import CreateTaskProps from "./CreateTask.props";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
@@ -55,49 +55,48 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal
+    <MainPopup
       isOpen={isOpen}
       onClose={onClose}
-      title="Создание задачи"
       buttonText="Создать"
-      contentComponent={
-        <div>
-          <div className={styles.item_row}>
-            <RequiredFiled
-              value={taskName}
-              isValueValid={isTaskNameValid}
-              onValueChange={handleTaskNameChange}
-              placeholderValue="Введите имя задачи"
-              styleClassValid={styles.required_field_task}
-              styleClassInvalid={styles.required_field_task_invalid}
-            />
-            <div className={styles.input_box}>
-              <label htmlFor="taskCategory">Категория</label>
-              <CategoryDropdown
-                selectedCategory={undefined}
-                onCategorySelect={handleCategorySelect}
-              />
-            </div>
-          </div>
+      error={error}
+      isDisabled={!isTaskNameValid}
+      isLoading={isLoading}
+      onSubmit={handleCreateTask}
+      title="Создание задачи"
+    >
+      <div>
+        <div className={styles.item_row}>
+          <RequiredField
+            value={taskName}
+            isValueValid={isTaskNameValid}
+            onValueChange={handleTaskNameChange}
+            placeholderValue="Введите имя задачи"
+            styleClassValid={styles.required_field_task}
+            styleClassInvalid={styles.required_field_task_invalid}
+          />
           <div className={styles.input_box}>
-            <label htmlFor="taskDesc">Описание</label>
-            <textarea
-              id="taskDesc"
-              name="taskDesc"
-              placeholder="Введите описание задачи"
-              value={taskDescription}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setTaskDescription(e.target.value)
-              }
-            ></textarea>
+            <label htmlFor="taskCategory">Категория</label>
+            <CategoryDropdown
+              selectedCategory={undefined}
+              onCategorySelect={handleCategorySelect}
+            />
           </div>
         </div>
-      }
-      onCreateTask={handleCreateTask}
-      isCreateTaskDisabled={!isTaskNameValid}
-      isLoading={isLoading}
-      error={error}
-    />
+        <div className={styles.input_box}>
+          <label htmlFor="taskDesc">Описание</label>
+          <textarea
+            id="taskDesc"
+            name="taskDesc"
+            placeholder="Введите описание задачи"
+            value={taskDescription}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+              setTaskDescription(e.target.value)
+            }
+          ></textarea>
+        </div>
+      </div>
+    </MainPopup>
   );
 };
 

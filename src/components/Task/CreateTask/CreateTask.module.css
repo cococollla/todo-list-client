@@ -1,0 +1,27 @@
+.item_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.input_box {
+  position: relative;
+  margin: 10px;
+}
+
+.required_field_task,
+.required_field_task_invalid {
+  background-color: #dbe2ef;
+  width: 300px;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.required_field_task_invalid {
+  border: 2px solid #ec1d1d;
+}
+
+.required_field_task {
+  border: 2px solid #3f72af;
+}
