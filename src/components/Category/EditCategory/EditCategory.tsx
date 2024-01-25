@@ -1,13 +1,14 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import EditCategoryProps from "./EditCategory.props";
 import Category from "../../../interfaces/Category";
-import Modal from "../../Modal/Modal";
 import RequiredFiled from "../../Input/Input";
-import styles from "../../Modal/Modal.module.css";
+import styles from "./EditCategory.module.css";
+import ModalStore from "../../../store/ModalStore";
+import MainPopup from "../../../UiKit/MainPopup/MainPopup";
+import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
+import { observer } from "mobx-react";
 
 const EditCategory: FC<EditCategoryProps> = ({
-  isOpen,
-  onClose,
   category,
   onEditCategory: onSubmit,
 }) => {
@@ -15,20 +16,30 @@ const EditCategory: FC<EditCategoryProps> = ({
   const [categoryDescription, setCategoryDescription] = useState<string>(
     category.description
   );
+  const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
+    useState<boolean>(true);
   const [isCategoryNameValid, setIsCategoryNameValid] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isOpen) {
+    if (ModalStore.modalIsOpen && ModalStore.modalType === "editCategory") {
       setCategoryName(category.name);
       setCategoryDescription(category.description);
       setIsCategoryNameValid(true);
     }
-  }, [isOpen]);
+  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCategoryName(value);
     setIsCategoryNameValid(!!value.trim());
+  };
+
+  const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setCategoryDescription(value);
+    setIsCategoryDescriptionValid(value.length <= 512);
   };
 
   const handleEditCategory = () => {
@@ -42,43 +53,36 @@ const EditCategory: FC<EditCategoryProps> = ({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Редактирование категории"
+    <MainPopup
+      onClose={() => ModalStore.setModalIsOpen(false, "editCategory")}
       buttonText="Сохранить"
-      contentComponent={
+      error={error}
+      isDisabled={!isCategoryNameValid}
+      isLoading={isLoading}
+      onSubmit={handleEditCategory}
+      title="Редиктирование категории"
+    >
+      {" "}
+      <div>
         <div>
-          <div>
-            <RequiredFiled
-              value={categoryName}
-              isValueValid={isCategoryNameValid}
-              onValueChange={handleCategoryNameChange}
-              placeholderValue="Введите имя категории"
-              styleClassValid={styles.required_field_category}
-              styleClassInvalid={styles.required_field_category_invalid}
-            />
-          </div>
-          <div className={styles.input_box}>
-            <label htmlFor="taskDesc">Описание</label>
-            <textarea
-              id="taskDesc"
-              name="taskDesc"
-              placeholder="Введите описание задачи"
-              value={categoryDescription}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setCategoryDescription(e.target.value)
-              }
-            ></textarea>
-          </div>
+          <RequiredFiled
+            value={categoryName}
+            isValueValid={isCategoryNameValid}
+            onValueChange={handleCategoryNameChange}
+            placeholderValue="Введите имя категории"
+            styleClassValid={styles.required_field_category}
+            styleClassInvalid={styles.required_field_category_invalid}
+          />
         </div>
-      }
-      onCreateTask={() => handleEditCategory()}
-      isCreateTaskDisabled={!isCategoryNameValid}
-      isLoading={null}
-      error={null}
-    />
+        <TextAreaField
+          value={categoryDescription}
+          isValueValid={isCategoryDescriptionValid}
+          onValueChange={handleTaskDescriptionChange}
+          placeholderValue="Введите описание"
+        />
+      </div>
+    </MainPopup>
   );
 };
 
-export default EditCategory;
+export default observer(EditCategory);

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import RequiredField from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
@@ -6,25 +6,30 @@ import Category from "../../../interfaces/Category";
 import { TaskDto } from "../../../interfaces/TaskDto";
 import taskStore from "../../../store/TaskStore";
 import styles from "./CreateTask.module.css";
-import CreateTaskProps from "./CreateTask.props";
+import ModalStore from "../../../store/ModalStore";
+import categoryStore from "../../../store/CategoryStore";
+import { observer } from "mobx-react";
+import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 
-const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
+const CreateTask = () => {
   const [taskName, setTaskName] = useState<string>("");
   const [taskDescription, setTaskDescription] = useState<string>("");
   const [categoryId, setCategoryId] = useState<number>(0);
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(false);
+  const [isTaskDescriptionValid, setIsTaskDescriptionValid] =
+    useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isOpen) {
+    if (ModalStore.modalIsOpen && ModalStore.modalType === "createTask") {
       setTaskName("");
       setTaskDescription("");
       setCategoryId(0);
       setIsTaskNameValid(false);
       setError(null);
     }
-  }, [isOpen]);
+  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
 
   const handleCreateTask = async () => {
     setIsLoading(true);
@@ -36,7 +41,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       };
 
       const id = await taskStore.addTask(newTask);
-      id && onClose();
+      id && ModalStore.setModalIsOpen(false, "createTask");
     } catch (error) {
       setError("Ошибка при создании задачи");
     } finally {
@@ -54,10 +59,15 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     setCategoryId(selectedCategory.id);
   };
 
+  const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setTaskDescription(value);
+    setIsTaskDescriptionValid(value.length <= 1536);
+  };
+
   return (
     <MainPopup
-      isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => ModalStore.setModalIsOpen(false, "createTask")}
       buttonText="Создать"
       error={error}
       isDisabled={!isTaskNameValid}
@@ -78,26 +88,20 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>
             <CategoryDropdown
-              selectedCategory={undefined}
+              selectedCategory={categoryStore.getCategory(categoryId)}
               onCategorySelect={handleCategorySelect}
             />
           </div>
         </div>
-        <div className={styles.input_box}>
-          <label htmlFor="taskDesc">Описание</label>
-          <textarea
-            id="taskDesc"
-            name="taskDesc"
-            placeholder="Введите описание задачи"
-            value={taskDescription}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setTaskDescription(e.target.value)
-            }
-          ></textarea>
-        </div>
+        <TextAreaField
+          value={taskDescription}
+          isValueValid={isTaskDescriptionValid}
+          onValueChange={handleTaskDescriptionChange}
+          placeholderValue="Введите описание"
+        />
       </div>
     </MainPopup>
   );
 };
 
-export default CreateTask;
+export default observer(CreateTask);

@@ -1,25 +1,30 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
-import CreateCategoryProps from "./CreateCategory.props";
-import Category from "../../../interfaces/Category";
+import { ChangeEvent, useEffect, useState } from "react";
 import CategoryStore from "../../../store/CategoryStore";
-import Modal from "../../Modal/Modal";
 import RequiredFiled from "../../Input/Input";
-import styles from "../../Modal/Modal.module.css";
+import styles from "./CreateCategory.module.css";
 import { CategoryDto } from "../../../interfaces/CategoryDto";
+import ModalStore from "../../../store/ModalStore";
+import MainPopup from "../../../UiKit/MainPopup/MainPopup";
+import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
+import { observer } from "mobx-react";
 
-const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
+const CreateCategory = () => {
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryDescription, setCategoryDescription] = useState<string>("");
   const [isCategoryNameValid, setIsCategoryNameValid] =
     useState<boolean>(false);
+  const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
+    useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isOpen) {
+    if (ModalStore.modalIsOpen && ModalStore.modalType === "createCategory") {
       setCategoryName("");
       setCategoryDescription("");
       setIsCategoryNameValid(false);
     }
-  }, [isOpen]);
+  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
 
   const handleCreateCategory = () => {
     const newCategory: CategoryDto = {
@@ -28,7 +33,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
     };
 
     CategoryStore.addCategory(newCategory);
-    onClose();
+    ModalStore.setModalIsOpen(false, "createTask");
   };
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,44 +42,44 @@ const CreateCategory: FC<CreateCategoryProps> = ({ isOpen, onClose }) => {
     setIsCategoryNameValid(!!value.trim());
   };
 
+  const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setCategoryDescription(value);
+    setIsCategoryDescriptionValid(value.length <= 512);
+  };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Создание категории"
+    <MainPopup
+      onClose={() => {
+        ModalStore.setModalIsOpen(false, "createCategory");
+      }}
       buttonText="Создать"
-      contentComponent={
+      error={error}
+      isDisabled={!isCategoryNameValid}
+      isLoading={isLoading}
+      onSubmit={handleCreateCategory}
+      title="Создание категории"
+    >
+      <div>
         <div>
-          <div>
-            <RequiredFiled
-              value={categoryName}
-              isValueValid={isCategoryNameValid}
-              onValueChange={handleCategoryNameChange}
-              placeholderValue="Введите имя категории"
-              styleClassValid={styles.required_field_category}
-              styleClassInvalid={styles.required_field_category_invalid}
-            />
-          </div>
-          <div className={styles.input_box}>
-            <label htmlFor="taskDesc">Описание</label>
-            <textarea
-              id="taskDesc"
-              name="taskDesc"
-              placeholder="Введите описание категории"
-              value={categoryDescription}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setCategoryDescription(e.target.value)
-              }
-            ></textarea>
-          </div>
+          <RequiredFiled
+            value={categoryName}
+            isValueValid={isCategoryNameValid}
+            onValueChange={handleCategoryNameChange}
+            placeholderValue="Введите имя категории"
+            styleClassValid={styles.required_field_category}
+            styleClassInvalid={styles.required_field_category_invalid}
+          />
         </div>
-      }
-      onCreateTask={handleCreateCategory}
-      isCreateTaskDisabled={!isCategoryNameValid}
-      isLoading={null}
-      error={null}
-    />
+        <TextAreaField
+          value={categoryDescription}
+          isValueValid={isCategoryDescriptionValid}
+          onValueChange={handleTaskDescriptionChange}
+          placeholderValue="Введите описание"
+        />
+      </div>
+    </MainPopup>
   );
 };
 
-export default CreateCategory;
+export default observer(CreateCategory);

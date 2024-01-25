@@ -2,33 +2,38 @@ import { FC, useEffect, useState, ChangeEvent } from "react";
 import EditTaskProps from "./EditTask.props";
 import Task from "../../../interfaces/Task";
 import styles from "./EditTask.module.css";
-import RequiredFiled from "../../Input/Input";
+import RequiredField from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import categoryStore from "../../../store/CategoryStore";
 import Category from "../../../interfaces/Category";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TaskStore from "../../../store/TaskStore";
-import { setTextRange } from "typescript";
+import ModalStore from "../../../store/ModalStore";
+import { observer } from "mobx-react";
+import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 
-const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task }) => {
+const EditTask: FC<EditTaskProps> = ({ task }) => {
   const [taskName, setTaskName] = useState<string>(task.name.toString());
   const [taskDescription, setTaskDescription] = useState<string>(
     task.description.toString()
   );
   const [categoryId, setCategoryId] = useState<number>(task.categoryId);
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(true);
+  const [isTaskDescriptionValid, setIsTaskDescriptionValid] =
+    useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isOpen) {
+    if (ModalStore.modalIsOpen && ModalStore.modalType === "editTask") {
       setTaskName(task.name);
       setTaskDescription(task.description);
       setCategoryId(task.categoryId);
       setIsTaskNameValid(true);
+      setIsTaskDescriptionValid(true);
       setError(null);
     }
-  }, [isOpen]);
+  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
 
   const handleEditTask = async () => {
     setIsLoading(true);
@@ -41,7 +46,7 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task }) => {
       };
 
       const id = await TaskStore.editTask(editTask);
-      id && onClose();
+      id && ModalStore.setModalIsOpen(false, "editTask");
     } catch {
       setError("Ошибка при обновлении задачи");
     } finally {
@@ -52,17 +57,22 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task }) => {
   const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTaskName(value);
-    setIsTaskNameValid(!!value.trim());
+    setIsTaskNameValid(!!value.trim() && value.length <= 255);
   };
 
   const handleCategorySelect = (selectedCategory: Category) => {
     setCategoryId(selectedCategory.id);
   };
 
+  const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setTaskDescription(value);
+    setIsTaskDescriptionValid(value.length <= 1536);
+  };
+
   return (
     <MainPopup
-      isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => ModalStore.setModalIsOpen(false, "editTask")}
       buttonText="Сохранить"
       error={error}
       isDisabled={!isTaskNameValid}
@@ -72,7 +82,7 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task }) => {
     >
       <div>
         <div className={styles.item_row}>
-          <RequiredFiled
+          <RequiredField
             value={taskName}
             isValueValid={isTaskNameValid}
             onValueChange={handleTaskNameChange}
@@ -88,21 +98,15 @@ const EditTask: FC<EditTaskProps> = ({ isOpen, onClose, task }) => {
             />
           </div>
         </div>
-        <div className={styles.input_box}>
-          <label htmlFor="taskDesc">Описание</label>
-          <textarea
-            id="taskDesc"
-            name="taskDesc"
-            placeholder="Введите описание задачи"
-            value={taskDescription}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setTaskDescription(e.target.value)
-            }
-          ></textarea>
-        </div>
+        <TextAreaField
+          value={taskDescription}
+          isValueValid={isTaskDescriptionValid}
+          onValueChange={handleTaskDescriptionChange}
+          placeholderValue="Введите описание"
+        />
       </div>
     </MainPopup>
   );
 };
 
-export default EditTask;
+export default observer(EditTask);

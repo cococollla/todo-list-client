@@ -9,77 +9,64 @@ import categoryStore from "../../store/CategoryStore";
 import CategoryName from "../CategoryName/CategoryName";
 import TaskListProps from "./TaskListProps";
 import CreateTask from "../Task/CreateTask/CreateTask";
+import ModalStore from "../../store/ModalStore";
 
-export const TaskList: FC<TaskListProps> = observer(
-  ({ createActive, setCreateActive }) => {
-    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-    const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
-    const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+export const TaskList = observer(() => {
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-    useEffect(() => {
-      taskStore.fetchTasks();
-      categoryStore.fetchCategories();
-    }, []);
+  useEffect(() => {
+    taskStore.fetchTasks();
+    categoryStore.fetchCategories();
+  }, []);
 
-    const handleEditClick = (task: Task) => {
-      setSelectedTask(task);
-      setEditModalOpen(true);
-    };
+  const handleEditClick = (task: Task) => {
+    setSelectedTask(task);
+    ModalStore.setModalIsOpen(true, "editTask");
+  };
 
-    const handleDeleteClick = (task: Task) => {
-      setSelectedTask(task);
-      setDeleteModalOpen(true);
-    };
+  const handleDeleteClick = (task: Task) => {
+    setSelectedTask(task);
+    ModalStore.setModalIsOpen(true, "deleteTask");
+  };
 
-    const handleDeleteTask = (task: Task) => {
-      taskStore.deleteTask(task);
-      setDeleteModalOpen(false);
-    };
+  const handleDeleteTask = (task: Task) => {
+    taskStore.deleteTask(task);
+    ModalStore.setModalIsOpen(false, "deleteTask");
+  };
 
-    return (
-      <>
-        {taskStore.tasks.map((task) => (
-          <div key={task.id.toString()} className={styles.item_todo}>
-            <div className={styles.todo_content}>
-              <div className={styles.todoTitle}>
-                <div>{task.name}</div>
-                <CategoryName categoryId={task.categoryId} />
-              </div>
-              <div className={styles.todo_content}>{task.description}</div>
+  return (
+    <>
+      {taskStore.tasks.map((task) => (
+        <div key={task.id.toString()} className={styles.item_todo}>
+          <div className={styles.todo_content}>
+            <div className={styles.todoTitle}>
+              <div>{task.name}</div>
+              <CategoryName categoryId={task.categoryId} />
             </div>
-            <div className={styles.button_container}>
-              <div onClick={() => handleEditClick(task)}>
-                <img src="svg/edit.svg"></img>
-              </div>
-              <div onClick={() => handleDeleteClick(task)}>
-                <img src="svg/delete.svg" />
-              </div>
+            <div className={styles.todo_content}>{task.description}</div>
+          </div>
+          <div className={styles.button_container}>
+            <div onClick={() => handleEditClick(task)}>
+              <img src="svg/edit.svg"></img>
+            </div>
+            <div onClick={() => handleDeleteClick(task)}>
+              <img src="svg/delete.svg" />
             </div>
           </div>
-        ))}
-        <CreateTask
-          isOpen={createActive}
-          onClose={() => setCreateActive(false)}
-        />
+        </div>
+      ))}
 
-        {selectedTask && (
-          <EditTask
-            isOpen={isEditModalOpen}
-            onClose={() => setEditModalOpen(false)}
-            task={selectedTask}
-          />
-        )}
-        {selectedTask && (
-          <DeleteTask
-            isOpen={isDeleteModalOpen}
-            onClose={() => setDeleteModalOpen(false)}
-            task={selectedTask}
-            onDeleteTask={handleDeleteTask}
-          />
-        )}
-      </>
-    );
-  }
-);
+      {ModalStore.modalType === "createTask" && <CreateTask />}
+
+      {selectedTask && ModalStore.modalType === "editTask" && (
+        <EditTask task={selectedTask} />
+      )}
+
+      {selectedTask && ModalStore.modalType === "deleteTask" && (
+        <DeleteTask task={selectedTask} onDeleteTask={handleDeleteTask} />
+      )}
+    </>
+  );
+});
 
 export default TaskList;

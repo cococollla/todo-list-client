@@ -1,5 +1,7 @@
+import { ModalType } from "../../store/ModalStore";
+
 interface HeaderProps {
-  setModalActive: (value: boolean) => void;
+  modalType: ModalType;
   navLink: string;
 }
 

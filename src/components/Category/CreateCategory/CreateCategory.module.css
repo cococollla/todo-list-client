@@ -8,28 +8,28 @@
   margin: 10px;
 }
 
-.required_field_task,
-.required_field_task_invalid {
+.required_field_category,
+.required_field_category_invalid {
   background-color: #dbe2ef;
-  width: 300px;
+  width: 700px;
   border-radius: 4px;
-  padding: 10px;
+  padding: 15px;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
 }
 
-.required_field_task_invalid {
+.required_field_category_invalid {
   border: 2px solid #ec1d1d;
 }
 
-.required_field_task {
+.required_field_category {
   border: 2px solid #3f72af;
 }
 
-.required_field_task:hover,
-.required_field_task_invalid:hover,
-.required_field_task:focus,
-.required_field_task_invalid:focus {
+.required_field_category:hover,
+.required_field_category_invalid:hover,
+.required_field_category:focus,
+.required_field_category_invalid:focus {
   outline-style: none;
   border-color: #257fea;
 }

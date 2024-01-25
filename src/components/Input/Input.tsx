@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import InputProps from "./Input.props";
 import styles from "./Input.module.css";
 

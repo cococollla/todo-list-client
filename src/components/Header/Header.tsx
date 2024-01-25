@@ -1,10 +1,14 @@
-import React, { FC } from "react";
-import { NavLink } from "react-router-dom";
+import { FC } from "react";
 import styles from "./Header.module.css";
 import HeaderProps from "./Header.props";
 import CustomLink from "../CustomLink/CustomLink";
+import ModalStore, { ModalType } from "../../store/ModalStore";
 
-const Header: FC<HeaderProps> = ({ setModalActive, navLink }) => {
+const Header: FC<HeaderProps> = ({ modalType, navLink }) => {
+  const handleModalOpen = (modalType: ModalType) => {
+    ModalStore.setModalIsOpen(true, modalType);
+  };
+
   return (
     <div className={styles.header}>
       <div className={styles.nav_item}>
@@ -18,7 +22,10 @@ const Header: FC<HeaderProps> = ({ setModalActive, navLink }) => {
         </div>
       </div>
       <div>
-        <div className={styles.nav_link} onClick={() => setModalActive(true)}>
+        <div
+          className={styles.nav_link}
+          onClick={() => handleModalOpen(modalType)}
+        >
           {navLink}
         </div>
       </div>

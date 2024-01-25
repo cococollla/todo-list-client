@@ -5,84 +5,73 @@ import styles from "./CategotyList.module.css";
 import { observer } from "mobx-react";
 import EditCategory from "../Category/EditCategory/EditCategory";
 import DelteCategory from "../Category/DeleteCategory/DeleteCategory";
-import CategoryListProps from "./CategoeyList.props";
 import CreateCategory from "../Category/CreateCategory/CreateCategory";
+import ModalStore from "../../store/ModalStore";
 
-export const CategotyList: FC<CategoryListProps> = observer(
-  ({ createActive, setCreateActive }) => {
-    const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-      null
-    );
-    const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
-    const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+export const CategotyList = observer(() => {
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
-    useEffect(() => {
-      categoryStore.fetchCategories();
-    }, []);
+  useEffect(() => {
+    categoryStore.fetchCategories();
+  }, []);
 
-    const handleEditClick = (category: Category) => {
-      setSelectedCategory(category);
-      setEditModalOpen(true);
-    };
+  const handleEditClick = (category: Category) => {
+    setSelectedCategory(category);
+    ModalStore.setModalIsOpen(true, "editCategory");
+  };
 
-    const handleEditTask = (category: Category) => {
-      categoryStore.editCategory(category);
-      setEditModalOpen(false);
-    };
+  const handleEditTask = (category: Category) => {
+    categoryStore.editCategory(category);
+    ModalStore.setModalIsOpen(false, "editCategory");
+  };
 
-    const handleDeleteClick = (category: Category) => {
-      setSelectedCategory(category);
-      setDeleteModalOpen(true);
-    };
+  const handleDeleteClick = (category: Category) => {
+    setSelectedCategory(category);
+    ModalStore.setModalIsOpen(true, "deleteCategory");
+  };
 
-    const handleDeleteCategory = (category: Category) => {
-      categoryStore.deleteCategory(category);
-      setDeleteModalOpen(false);
-    };
+  const handleDeleteCategory = (category: Category) => {
+    categoryStore.deleteCategory(category);
+    ModalStore.setModalIsOpen(false, "deleteCategory");
+  };
 
-    return (
-      <>
-        {categoryStore.categories.map((category) => (
-          <div key={category.id.toString()} className={styles.item_category}>
-            <div>
-              <div className={styles.category_title}>{category.name}</div>
-              <div className={styles.category_content}>
-                {category.description}
-              </div>
-            </div>
-            <div className={styles.button_container}>
-              <div onClick={() => handleEditClick(category)}>
-                <img src="svg/edit.svg" />
-              </div>
-              <div onClick={() => handleDeleteClick(category)}>
-                <img src="svg/delete.svg" />
-              </div>
+  return (
+    <>
+      {categoryStore.categories.map((category) => (
+        <div key={category.id.toString()} className={styles.item_category}>
+          <div>
+            <div className={styles.category_title}>{category.name}</div>
+            <div className={styles.category_content}>
+              {category.description}
             </div>
           </div>
-        ))}
-        <CreateCategory
-          isOpen={createActive}
-          onClose={() => setCreateActive(false)}
+          <div className={styles.button_container}>
+            <div onClick={() => handleEditClick(category)}>
+              <img src="svg/edit.svg" />
+            </div>
+            <div onClick={() => handleDeleteClick(category)}>
+              <img src="svg/delete.svg" />
+            </div>
+          </div>
+        </div>
+      ))}
+      {ModalStore.modalType === "createCategory" && <CreateCategory />}
+      {selectedCategory && ModalStore.modalType === "editCategory" && (
+        <EditCategory
+          category={selectedCategory}
+          onEditCategory={handleEditTask}
         />
-        {selectedCategory && (
-          <EditCategory
-            isOpen={isEditModalOpen}
-            onClose={() => setEditModalOpen(false)}
-            category={selectedCategory}
-            onEditCategory={handleEditTask}
-          />
-        )}
-        {selectedCategory && (
-          <DelteCategory
-            isOpen={isDeleteModalOpen}
-            onClose={() => setDeleteModalOpen(false)}
-            category={selectedCategory}
-            onDeleteCategory={handleDeleteCategory}
-          />
-        )}
-      </>
-    );
-  }
-);
+      )}
+      {selectedCategory && ModalStore.modalType === "deleteCategory" && (
+        <DelteCategory
+          category={selectedCategory}
+          onDeleteCategory={handleDeleteCategory}
+        />
+      )}
+    </>
+  );
+});
 
 export default CategotyList;

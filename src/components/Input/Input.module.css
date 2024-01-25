@@ -26,3 +26,11 @@
   position: relative;
   margin: 10px;
 }
+
+.container label {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: #dbe2ef;
+  padding: 0 5px;
+}

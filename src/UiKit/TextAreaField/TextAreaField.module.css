@@ -1,0 +1,53 @@
+.error_message_hidden {
+  margin-bottom: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s, visibility 0.2s;
+}
+
+.error_message {
+  color: #ec1d1d;
+  margin-bottom: 20px;
+  opacity: 1;
+  transition: opacity 0.4s, visibility 0s;
+}
+
+.item_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.input_box {
+  position: relative;
+  margin: 10px;
+}
+
+.textarea_valid,
+.textarea_invalid {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #dbe2ef;
+  height: 70px;
+  border: 2px solid #3f72af;
+  padding: 10px;
+  border-radius: 4px;
+  resize: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.textarea_valid {
+  border: 2px solid #3f72af;
+}
+
+.textarea_invalid:hover,
+.textarea_invalid:focus,
+.textarea_valid:hover,
+.textarea_valid:focus {
+  outline-style: none;
+  border-color: #257fea;
+}
+
+.textarea_invalid {
+  border: 2px solid #ec1d1d;
+}

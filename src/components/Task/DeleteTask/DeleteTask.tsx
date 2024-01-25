@@ -2,17 +2,12 @@ import { FC } from "react";
 import DeleteTaskProps from "./DeleteTask.props";
 import styles from "./DeleteTask.module.css";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
+import ModalStore from "../../../store/ModalStore";
 
-const DeleteTask: FC<DeleteTaskProps> = ({
-  isOpen,
-  onClose,
-  task,
-  onDeleteTask,
-}) => {
+const DeleteTask: FC<DeleteTaskProps> = ({ task, onDeleteTask }) => {
   return (
     <MainPopup
-      isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => ModalStore.setModalIsOpen(false, "deleteTask")}
       buttonText="Да"
       error={null}
       isDisabled={false}

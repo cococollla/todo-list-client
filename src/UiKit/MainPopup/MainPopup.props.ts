@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 
 interface MainPopupProps {
-  isOpen: boolean;
   onClose: () => void;
   title: string;
   buttonText: string;

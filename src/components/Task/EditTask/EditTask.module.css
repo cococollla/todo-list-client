@@ -25,3 +25,11 @@
 .required_field_task {
   border: 2px solid #3f72af;
 }
+
+.required_field_task:hover,
+.required_field_task_invalid:hover,
+.required_field_task:focus,
+.required_field_task_invalid:focus {
+  outline-style: none;
+  border-color: #257fea;
+}
