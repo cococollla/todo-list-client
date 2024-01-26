@@ -1,6 +1,7 @@
+import Task from "../../interfaces/Task";
+
 interface TaskListProps {
-  createActive: boolean;
-  setCreateActive: (value: boolean) => void;
+  setSelectedTask: (task: Task) => void;
 }
 
 export default TaskListProps;

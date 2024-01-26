@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, ReactNode } from "react";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import RequiredField from "../../Input/Input";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";

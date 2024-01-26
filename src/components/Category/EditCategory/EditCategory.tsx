@@ -7,11 +7,9 @@ import ModalStore from "../../../store/ModalStore";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
+import categoryStore from "../../../store/CategoryStore";
 
-const EditCategory: FC<EditCategoryProps> = ({
-  category,
-  onEditCategory: onSubmit,
-}) => {
+const EditCategory: FC<EditCategoryProps> = ({ category }) => {
   const [categoryName, setCategoryName] = useState<string>(category.name);
   const [categoryDescription, setCategoryDescription] = useState<string>(
     category.description
@@ -49,7 +47,8 @@ const EditCategory: FC<EditCategoryProps> = ({
       description: categoryDescription,
     };
 
-    onSubmit(editCategory);
+    categoryStore.editCategory(editCategory);
+    ModalStore.setModalIsOpen(false, "editCategory");
   };
 
   return (

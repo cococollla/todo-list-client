@@ -13,9 +13,9 @@ import { observer } from "mobx-react";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 
 const EditTask: FC<EditTaskProps> = ({ task }) => {
-  const [taskName, setTaskName] = useState<string>(task.name.toString());
+  const [taskName, setTaskName] = useState<string>(task.name);
   const [taskDescription, setTaskDescription] = useState<string>(
-    task.description.toString()
+    task.description
   );
   const [categoryId, setCategoryId] = useState<number>(task.categoryId);
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(true);
@@ -39,10 +39,10 @@ const EditTask: FC<EditTaskProps> = ({ task }) => {
     setIsLoading(true);
     try {
       const editTask: Task = {
+        id: task.id,
         name: taskName,
         description: taskDescription,
         categoryId: categoryId,
-        id: task.id,
       };
 
       const id = await TaskStore.editTask(editTask);

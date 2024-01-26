@@ -1,11 +1,11 @@
 import { FC } from "react";
 import { Navigate, Route, Routes, useMatch } from "react-router-dom";
 import Header from "./components/Header/Header";
-import TaskList from "./components/TaskList/TaskList";
-import CategotyList from "./components/CategoryList/CategoryList";
+import TaskPage from "./pages/TaskPage";
+import CategoryPage from "./pages/CategoryPage";
 
 const App: FC = () => {
-  const linkToTasks = useMatch("tasks");
+  const linkToTasks = useMatch("/tasks");
 
   return (
     <div className="App">
@@ -15,8 +15,8 @@ const App: FC = () => {
       />
       <Routes>
         <Route path="*" element={<Navigate to="tasks" replace={true} />} />
-        <Route path="/tasks" element={<TaskList />} />
-        <Route path="/categories" element={<CategotyList />} />
+        <Route path="/tasks" element={<TaskPage />} />
+        <Route path="/categories" element={<CategoryPage />} />
       </Routes>
     </div>
   );
