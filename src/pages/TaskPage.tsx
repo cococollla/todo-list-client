@@ -16,9 +16,14 @@ const TaskPage = () => {
     description: "",
     categoryId: 0,
   });
+
   useEffect(() => {
-    taskStore.fetchTasks();
-    categoryStore.fetchCategories();
+    const fetchData = async () => {
+      await taskStore.fetchTasks();
+      await categoryStore.fetchCategories();
+    };
+
+    fetchData();
   }, []);
 
   return (

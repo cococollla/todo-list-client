@@ -23,17 +23,25 @@ const CreateCategory = () => {
       setCategoryName("");
       setCategoryDescription("");
       setIsCategoryNameValid(false);
+      setError(null);
     }
   }, [ModalStore.modalIsOpen, ModalStore.modalType]);
 
-  const handleCreateCategory = () => {
-    const newCategory: CategoryDto = {
-      name: categoryName,
-      description: categoryDescription,
-    };
+  const handleCreateCategory = async () => {
+    setIsLoading(true);
+    try {
+      const newCategory: CategoryDto = {
+        name: categoryName,
+        description: categoryDescription,
+      };
 
-    CategoryStore.addCategory(newCategory);
-    ModalStore.setModalIsOpen(false, "createTask");
+      const id = await CategoryStore.addCategory(newCategory);
+      id && ModalStore.setModalIsOpen(false, "createCategory");
+    } catch {
+      setError("Ошибка при создании категории");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {

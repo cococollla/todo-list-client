@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import DeleteTaskProps from "./DeleteTask.props";
 import styles from "./DeleteTask.module.css";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
@@ -7,24 +7,36 @@ import taskStore from "../../../store/TaskStore";
 import Task from "../../../interfaces/Task";
 
 const DeleteTask: FC<DeleteTaskProps> = ({ task }) => {
-  const handleDeleteTask = () => {
-    const deleteTask: Task = {
-      id: task.id,
-      name: task.name,
-      description: task.description,
-      categoryId: task.categoryId,
-    };
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    taskStore.deleteTask(deleteTask);
-    ModalStore.setModalIsOpen(false, "deleteTask");
+  const handleDeleteTask = async () => {
+    setIsLoading(true);
+    try {
+      const deleteTask: Task = {
+        id: task.id,
+        name: task.name,
+        description: task.description,
+        categoryId: task.categoryId,
+      };
+
+      const successful = await taskStore.deleteTask(deleteTask);
+      successful
+        ? ModalStore.setModalIsOpen(false, "deleteTask")
+        : setError("Произошла ошибка при удалении задачи");
+    } catch {
+      setError("Произошла ошибка при удалении задачи");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <MainPopup
       onClose={() => ModalStore.setModalIsOpen(false, "deleteTask")}
       buttonText="Да"
-      error={null}
+      error={error}
       isDisabled={false}
-      isLoading={false}
+      isLoading={isLoading}
       onSubmit={handleDeleteTask}
       title="Удаление задачи"
     >

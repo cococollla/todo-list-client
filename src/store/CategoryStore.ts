@@ -22,23 +22,36 @@ class CategoryStore {
     );
     if (newCategory.id !== 0) {
       this.categories.push(newCategory);
+      return newCategory.id;
     }
+    return undefined;
   }
 
-  editCategory(editedCategory: Category) {
-    this.categoryApiService.editCategory(editedCategory).then(() => {
+  async editCategory(editedCategory: Category) {
+    const resultUpdate: Category = await this.categoryApiService.editCategory(
+      editedCategory
+    );
+    if (resultUpdate.id === editedCategory.id) {
       this.categories = this.categories.map((category) =>
         category.id === editedCategory.id ? { ...editedCategory } : category
       );
-    });
+      return resultUpdate.id;
+    }
+
+    return undefined;
   }
 
-  deleteCategory(category: Category) {
-    this.categoryApiService.deleteCategory(category.id);
-    const deletedCategories = this.categories.filter(
-      (c) => c.id !== category.id
-    );
-    this.setCategories(deletedCategories);
+  async deleteCategory(category: Category) {
+    try {
+      await this.categoryApiService.deleteCategory(category.id);
+      const deletedCategories = this.categories.filter(
+        (c) => c.id !== category.id
+      );
+      this.setCategories(deletedCategories);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   getCategory(categoryId: number) {
@@ -46,20 +59,22 @@ class CategoryStore {
     return category;
   }
 
-  fetchCategories() {
-    fetch("http://localhost:8089/api/ToDoList/GetCategories")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch category");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        this.setCategories(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error.message);
-      });
+  async fetchCategories() {
+    try {
+      const response = await fetch(
+        "http://localhost:8089/api/ToDoList/GetCategories"
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+
+      const data = await response.json();
+
+      this.setCategories(data);
+    } catch (error) {
+      console.error("Failed fetch categories");
+    }
   }
 }
 

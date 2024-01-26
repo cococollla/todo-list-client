@@ -9,7 +9,7 @@ class CategoryApiService extends BaseApiService {
     return this.request("/AddCategory", "POST", newCategory);
   }
 
-  async editCategory(editedCategory: Category) {
+  async editCategory(editedCategory: Category): Promise<Category> {
     return this.request("/UpdateCategory", "POST", editedCategory);
   }
 

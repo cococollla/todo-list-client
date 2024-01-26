@@ -40,15 +40,22 @@ const EditCategory: FC<EditCategoryProps> = ({ category }) => {
     setIsCategoryDescriptionValid(value.length <= 512);
   };
 
-  const handleEditCategory = () => {
-    const editCategory: Category = {
-      id: category.id,
-      name: categoryName,
-      description: categoryDescription,
-    };
+  const handleEditCategory = async () => {
+    setIsLoading(true);
+    try {
+      const editCategory: Category = {
+        id: category.id,
+        name: categoryName,
+        description: categoryDescription,
+      };
 
-    categoryStore.editCategory(editCategory);
-    ModalStore.setModalIsOpen(false, "editCategory");
+      const id = await categoryStore.editCategory(editCategory);
+      id && ModalStore.setModalIsOpen(false, "editCategory");
+    } catch {
+      setError("Ошибка при обновлении категории");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

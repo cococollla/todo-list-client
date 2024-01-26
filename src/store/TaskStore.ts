@@ -36,30 +36,37 @@ class TaskStore {
     return undefined;
   }
 
-  deleteTask(task: Task) {
-    this.taskApiService.deleteTask(task.id);
-    const deletedTasks = this.tasks.filter((t) => t.id !== task.id);
-    this.setTasks(deletedTasks);
+  async deleteTask(task: Task) {
+    try {
+      await this.taskApiService.deleteTask(task.id);
+      const deletedTasks = this.tasks.filter((t) => t.id !== task.id);
+      this.setTasks(deletedTasks);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
-  fetchTasks() {
-    fetch("http://localhost:8089/api/ToDoList/GetTasks")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const sortedTasks = data
-          .slice()
-          .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
+  async fetchTasks() {
+    try {
+      const response = await fetch(
+        "http://localhost:8089/api/ToDoList/GetTasks"
+      );
 
-        this.setTasks(sortedTasks);
-      })
-      .catch((error) => {
-        console.error("Error fetching tasks:", error.message);
-      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch tasks");
+      }
+
+      const data = await response.json();
+
+      const sortedTasks = data
+        .slice()
+        .sort((a: { id: number }, b: { id: number }) => a.id - b.id);
+
+      this.setTasks(sortedTasks);
+    } catch (error) {
+      console.error("Failed fetch tasks");
+    }
   }
 }
 
