@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import EditCategoryProps from "./EditCategory.props";
 import Category from "../../../interfaces/Category";
-import RequiredFiled from "../../Input/Input";
+import RequiredFiled from "../../../UiKit/Input/Input";
 import styles from "./EditCategory.module.css";
 import ModalStore from "../../../store/ModalStore";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";

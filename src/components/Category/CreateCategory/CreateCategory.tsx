@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import CategoryStore from "../../../store/CategoryStore";
-import RequiredFiled from "../../Input/Input";
+import RequiredFiled from "../../../UiKit/Input/Input";
 import styles from "./CreateCategory.module.css";
 import { CategoryDto } from "../../../interfaces/CategoryDto";
 import ModalStore from "../../../store/ModalStore";

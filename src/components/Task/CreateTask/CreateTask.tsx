@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, ReactNode } from "react";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
-import RequiredField from "../../Input/Input";
-import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
+import RequiredField from "../../../UiKit/Input/Input";
+import CategoryDropdown from "../../../UiKit/CategoryDropdown/CategoryDropdown";
 import Category from "../../../interfaces/Category";
 import { TaskDto } from "../../../interfaces/TaskDto";
 import taskStore from "../../../store/TaskStore";
