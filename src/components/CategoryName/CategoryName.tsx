@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import CategoryNameProps from "./CategoryName.props";
 import categoryStore from "../../store/CategoryStore";
 import styles from "../TaskList/TaskList.module.css";

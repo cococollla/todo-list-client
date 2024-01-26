@@ -42,7 +42,7 @@ class CategoryStore {
   }
 
   getCategory(categoryId: number) {
-    const category = this.categories.find((c) => c.id == categoryId);
+    const category = this.categories.find((c) => c.id === categoryId);
     return category;
   }
 

@@ -1,0 +1,21 @@
+.button_secondary {
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  padding: 8px 40;
+  background-color: #f0f0f0f0;
+  color: #3f72af;
+  border: 1px solid #3f72af;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button_secondary:hover,
+.button_secondary:focus {
+  outline-style: none;
+  background-color: rgba(37 127 234 / 20%);
+}
+
+.button_secondary:active {
+  background-color: #257fea;
+  color: #ffffff;
+}

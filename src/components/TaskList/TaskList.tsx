@@ -1,12 +1,11 @@
-import { useEffect, FC } from "react";
+import { FC } from "react";
 import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import taskStore from "../../store/TaskStore";
-import { observer } from "mobx-react";
-import categoryStore from "../../store/CategoryStore";
 import CategoryName from "../CategoryName/CategoryName";
 import ModalStore from "../../store/ModalStore";
 import TaskListProps from "./TaskListProps";
+import { observer } from "mobx-react";
 
 export const TaskList: FC<TaskListProps> = ({ setSelectedTask }) => {
   const handleEditClick = (task: Task) => {
@@ -17,11 +16,6 @@ export const TaskList: FC<TaskListProps> = ({ setSelectedTask }) => {
   const handleDeleteClick = (task: Task) => {
     setSelectedTask(task);
     ModalStore.setModalIsOpen(true, "deleteTask");
-  };
-
-  const handleDeleteTask = (task: Task) => {
-    taskStore.deleteTask(task);
-    ModalStore.setModalIsOpen(false, "deleteTask");
   };
 
   return (
@@ -49,4 +43,4 @@ export const TaskList: FC<TaskListProps> = ({ setSelectedTask }) => {
   );
 };
 
-export default TaskList;
+export default observer(TaskList);

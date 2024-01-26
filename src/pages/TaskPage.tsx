@@ -23,7 +23,6 @@ const TaskPage = () => {
 
   return (
     <div>
-      ghhhh
       <TaskList setSelectedTask={setSelectedTask} />
       {ModalStore.modalIsOpen && ModalStore.modalType === "createTask" && (
         <CreateTask />
