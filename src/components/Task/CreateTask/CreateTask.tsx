@@ -10,6 +10,7 @@ import ModalStore from "../../../store/ModalStore";
 import categoryStore from "../../../store/CategoryStore";
 import { observer } from "mobx-react";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
+import { useLoadingState } from "../../../hooks/useLoadingState";
 
 const CreateTask = () => {
   const [taskName, setTaskName] = useState<string>("");
@@ -18,8 +19,8 @@ const CreateTask = () => {
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(false);
   const [isTaskDescriptionValid, setIsTaskDescriptionValid] =
     useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { error, setError, isLoading, setIsLoading, resetState } =
+    useLoadingState();
 
   useEffect(() => {
     if (ModalStore.modalIsOpen && ModalStore.modalType === "createTask") {

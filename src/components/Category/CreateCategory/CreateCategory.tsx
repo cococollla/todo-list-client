@@ -7,6 +7,7 @@ import ModalStore from "../../../store/ModalStore";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
+import { useLoadingState } from "../../../hooks/useLoadingState";
 
 const CreateCategory = () => {
   const [categoryName, setCategoryName] = useState<string>("");
@@ -15,8 +16,8 @@ const CreateCategory = () => {
     useState<boolean>(false);
   const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
     useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { error, setError, isLoading, setIsLoading, resetState } =
+    useLoadingState();
 
   useEffect(() => {
     if (ModalStore.modalIsOpen && ModalStore.modalType === "createCategory") {

@@ -8,6 +8,7 @@ import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
 import categoryStore from "../../../store/CategoryStore";
+import { useLoadingState } from "../../../hooks/useLoadingState";
 
 const EditCategory: FC<EditCategoryProps> = ({ category }) => {
   const [categoryName, setCategoryName] = useState<string>(category.name);
@@ -17,8 +18,8 @@ const EditCategory: FC<EditCategoryProps> = ({ category }) => {
   const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
     useState<boolean>(true);
   const [isCategoryNameValid, setIsCategoryNameValid] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { error, setError, isLoading, setIsLoading, resetState } =
+    useLoadingState();
 
   useEffect(() => {
     if (ModalStore.modalIsOpen && ModalStore.modalType === "editCategory") {

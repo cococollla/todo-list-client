@@ -5,10 +5,11 @@ import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import ModalStore from "../../../store/ModalStore";
 import taskStore from "../../../store/TaskStore";
 import Task from "../../../interfaces/Task";
+import { useLoadingState } from "../../../hooks/useLoadingState";
 
 const DeleteTask: FC<DeleteTaskProps> = ({ task }) => {
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { error, setError, isLoading, setIsLoading, resetState } =
+    useLoadingState();
 
   const handleDeleteTask = async () => {
     setIsLoading(true);

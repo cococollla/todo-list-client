@@ -5,10 +5,12 @@ import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import ModalStore from "../../../store/ModalStore";
 import Category from "../../../interfaces/Category";
 import categoryStore from "../../../store/CategoryStore";
+import { useLoadingState } from "../../../hooks/useLoadingState";
 
 const DelteCategory: FC<DeleteCategoryProps> = ({ category }) => {
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { error, setError, isLoading, setIsLoading, resetState } =
+    useLoadingState();
+
   useEffect(() => {
     setError(null);
   }, []);
