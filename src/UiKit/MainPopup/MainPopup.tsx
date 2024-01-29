@@ -1,13 +1,12 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import MainPopupProps from "./MainPopup.props";
 import styles from "./MainPopup.module.css";
 import PopupHeader from "../PopupHeader/PopupHeader";
 import OverlayingPopup from "../OverlayingPopup/OverlayingPopup";
 import PopupFooter from "../PopupFooter/PopupFooter";
-import { observer } from "mobx-react";
-import ModalStore from "../../store/ModalStore";
 
 const MainPopup: FC<MainPopupProps> = ({
+  isOpened,
   onClose,
   buttonText,
   children,
@@ -18,7 +17,7 @@ const MainPopup: FC<MainPopupProps> = ({
   title,
 }) => {
   return (
-    <OverlayingPopup isOpen={ModalStore.modalIsOpen} onClose={() => onClose()}>
+    <OverlayingPopup isOpen={isOpened} onClose={() => onClose()}>
       <div className={styles.container}>
         <PopupHeader title={title} onClose={() => onClose()} />
         {children}
@@ -35,4 +34,4 @@ const MainPopup: FC<MainPopupProps> = ({
   );
 };
 
-export default observer(MainPopup);
+export default MainPopup;

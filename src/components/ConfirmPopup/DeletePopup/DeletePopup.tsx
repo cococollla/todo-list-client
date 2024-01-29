@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import DeleteCategoryProps from "./DeletePopup.props";
 import styles from "./DeletePopup.module.css";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
-import ModalStore from "../../../store/ModalStore";
 import categoryStore from "../../../store/CategoryStore";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 import Category from "../../../interfaces/Category";
@@ -12,6 +11,8 @@ import taskStore from "../../../store/TaskStore";
 const DeletePopup: FC<DeleteCategoryProps<Category | Task>> = ({
   data,
   title,
+  isOpen,
+  onClose,
 }) => {
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
@@ -26,9 +27,7 @@ const DeletePopup: FC<DeleteCategoryProps<Category | Task>> = ({
       const successful = isTask(data)
         ? await taskStore.deleteTask(data.id)
         : await categoryStore.deleteCategory(data.id);
-      successful
-        ? ModalStore.setModalIsOpen(false, "deleteConfirm")
-        : setError("Произошла ошибка при удалении");
+      successful ? onClose() : setError("Произошла ошибка при удалении");
     } catch {
       setError("Произошла ошибка при удалении");
     } finally {
@@ -38,7 +37,8 @@ const DeletePopup: FC<DeleteCategoryProps<Category | Task>> = ({
 
   return (
     <MainPopup
-      onClose={() => ModalStore.setModalIsOpen(false, "deleteConfirm")}
+      isOpened={isOpen}
+      onClose={onClose}
       buttonText="Да"
       error={error}
       isDisabled={false}

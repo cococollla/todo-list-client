@@ -2,13 +2,8 @@ import { FC } from "react";
 import styles from "./Header.module.css";
 import HeaderProps from "./Header.props";
 import CustomLink from "../CustomLink/CustomLink";
-import ModalStore, { ModalType } from "../../store/ModalStore";
 
-const Header: FC<HeaderProps> = ({ modalType, navLink }) => {
-  const handleModalOpen = (modalType: ModalType) => {
-    ModalStore.setModalIsOpen(true, modalType);
-  };
-
+const Header: FC<HeaderProps> = ({ setModalOpen, navLink }) => {
   return (
     <div className={styles.header}>
       <div className={styles.nav_item}>
@@ -22,10 +17,7 @@ const Header: FC<HeaderProps> = ({ modalType, navLink }) => {
         </div>
       </div>
       <div>
-        <div
-          className={styles.nav_link}
-          onClick={() => handleModalOpen(modalType)}
-        >
+        <div className={styles.nav_link} onClick={() => setModalOpen(true)}>
           {navLink}
         </div>
       </div>

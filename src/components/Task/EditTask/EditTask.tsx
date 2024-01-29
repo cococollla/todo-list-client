@@ -7,13 +7,12 @@ import categoryStore from "../../../store/CategoryStore";
 import Category from "../../../interfaces/Category";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TaskStore from "../../../store/TaskStore";
-import ModalStore from "../../../store/ModalStore";
 import { observer } from "mobx-react";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 
-const EditTask: FC<EditTaskProps> = ({ task }) => {
+const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>(task.name);
   const [taskDescription, setTaskDescription] = useState<string>(
     task.description
@@ -26,7 +25,7 @@ const EditTask: FC<EditTaskProps> = ({ task }) => {
     useLoadingState();
 
   useEffect(() => {
-    if (ModalStore.modalIsOpen && ModalStore.modalType === "editTask") {
+    if (isOpen) {
       setTaskName(task.name);
       setTaskDescription(task.description);
       setCategoryId(task.categoryId);
@@ -34,7 +33,7 @@ const EditTask: FC<EditTaskProps> = ({ task }) => {
       setIsTaskDescriptionValid(true);
       setError(null);
     }
-  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
+  }, [isOpen]);
 
   const handleEditTask = async () => {
     setIsLoading(true);
@@ -47,7 +46,7 @@ const EditTask: FC<EditTaskProps> = ({ task }) => {
       };
 
       const id = await TaskStore.editTask(editTask);
-      id && ModalStore.setModalIsOpen(false, "editTask");
+      id && onClose();
     } catch {
       setError("Ошибка при обновлении задачи");
     } finally {
@@ -73,7 +72,8 @@ const EditTask: FC<EditTaskProps> = ({ task }) => {
 
   return (
     <MainPopup
-      onClose={() => ModalStore.setModalIsOpen(false, "editTask")}
+      isOpened={isOpen}
+      onClose={onClose}
       buttonText="Сохранить"
       error={error}
       isDisabled={!isTaskNameValid}

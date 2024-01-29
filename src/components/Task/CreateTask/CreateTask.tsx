@@ -1,18 +1,18 @@
-import { useState, useEffect, ChangeEvent, ReactNode } from "react";
+import { useState, useEffect, ChangeEvent, ReactNode, FC } from "react";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import RequiredField from "../../../UiKit/Input/Input";
 import Category from "../../../interfaces/Category";
 import { TaskDto } from "../../../interfaces/TaskDto";
 import taskStore from "../../../store/TaskStore";
 import styles from "./CreateTask.module.css";
-import ModalStore from "../../../store/ModalStore";
 import categoryStore from "../../../store/CategoryStore";
 import { observer } from "mobx-react";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
+import CreateTaskProps from "./CreateTask.props";
 
-const CreateTask = () => {
+const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [taskDescription, setTaskDescription] = useState<string>("");
   const [categoryId, setCategoryId] = useState<number>(0);
@@ -23,14 +23,14 @@ const CreateTask = () => {
     useLoadingState();
 
   useEffect(() => {
-    if (ModalStore.modalIsOpen && ModalStore.modalType === "createTask") {
+    if (isOpen) {
       setTaskName("");
       setTaskDescription("");
       setCategoryId(0);
       setIsTaskNameValid(false);
       setError(null);
     }
-  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
+  }, [isOpen]);
 
   const handleCreateTask = async () => {
     setIsLoading(true);
@@ -42,7 +42,7 @@ const CreateTask = () => {
       };
 
       const id = await taskStore.addTask(newTask);
-      id && ModalStore.setModalIsOpen(false, "createTask");
+      id && onClose();
     } catch (error) {
       setError("Ошибка при создании задачи");
     } finally {
@@ -68,7 +68,8 @@ const CreateTask = () => {
 
   return (
     <MainPopup
-      onClose={() => ModalStore.setModalIsOpen(false, "createTask")}
+      isOpened={isOpen}
+      onClose={onClose}
       buttonText="Создать"
       error={error}
       isDisabled={!isTaskNameValid}

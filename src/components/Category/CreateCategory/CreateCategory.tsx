@@ -1,15 +1,15 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import CategoryStore from "../../../store/CategoryStore";
 import RequiredFiled from "../../../UiKit/Input/Input";
 import styles from "./CreateCategory.module.css";
 import { CategoryDto } from "../../../interfaces/CategoryDto";
-import ModalStore from "../../../store/ModalStore";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
 import { useLoadingState } from "../../../hooks/useLoadingState";
+import CreateCategiryProps from "./CreateTask.props";
 
-const CreateCategory = () => {
+const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryDescription, setCategoryDescription] = useState<string>("");
   const [isCategoryNameValid, setIsCategoryNameValid] =
@@ -20,13 +20,13 @@ const CreateCategory = () => {
     useLoadingState();
 
   useEffect(() => {
-    if (ModalStore.modalIsOpen && ModalStore.modalType === "createCategory") {
+    if (isOpen) {
       setCategoryName("");
       setCategoryDescription("");
       setIsCategoryNameValid(false);
       setError(null);
     }
-  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
+  }, [isOpen]);
 
   const handleCreateCategory = async () => {
     setIsLoading(true);
@@ -37,7 +37,7 @@ const CreateCategory = () => {
       };
 
       const id = await CategoryStore.addCategory(newCategory);
-      id && ModalStore.setModalIsOpen(false, "createCategory");
+      id && onClose();
     } catch {
       setError("Ошибка при создании категории");
     } finally {
@@ -59,9 +59,8 @@ const CreateCategory = () => {
 
   return (
     <MainPopup
-      onClose={() => {
-        ModalStore.setModalIsOpen(false, "createCategory");
-      }}
+      isOpened={isOpen}
+      onClose={onClose}
       buttonText="Создать"
       error={error}
       isDisabled={!isCategoryNameValid}

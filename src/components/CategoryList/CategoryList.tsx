@@ -3,19 +3,20 @@ import Category from "../../interfaces/Category";
 import categoryStore from "../../store/CategoryStore";
 import styles from "./CategotyList.module.css";
 import { observer } from "mobx-react";
-import ModalStore, { ModalType } from "../../store/ModalStore";
 import CategoryListProps from "./CategoryList.props";
 
 export const CategotyList: FC<CategoryListProps> = ({
   setSelectedCategory,
+  setDeleteModalOpen,
+  setEditModalOpen,
 }) => {
-  useEffect(() => {
-    categoryStore.fetchCategories();
-  }, []);
-
-  const handleClick = (category: Category, modalType: ModalType) => {
+  const handleDeleteClick = (category: Category) => {
     setSelectedCategory(category);
-    ModalStore.setModalIsOpen(true, modalType);
+    setDeleteModalOpen(true);
+  };
+  const handleEditClick = (category: Category) => {
+    setSelectedCategory(category);
+    setEditModalOpen(true);
   };
 
   return (
@@ -34,10 +35,10 @@ export const CategotyList: FC<CategoryListProps> = ({
               </div>
             </div>
             <div className={styles.button_container}>
-              <div onClick={() => handleClick(category, "editCategory")}>
+              <div onClick={() => handleEditClick(category)}>
                 <img src="svg/edit.svg" alt="Edit" />
               </div>
-              <div onClick={() => handleClick(category, "deleteConfirm")}>
+              <div onClick={() => handleDeleteClick(category)}>
                 <img src="svg/delete.svg" alt="Delete" />
               </div>
             </div>

@@ -3,14 +3,21 @@ import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import taskStore from "../../store/TaskStore";
 import CategoryName from "../CategoryName/CategoryName";
-import ModalStore, { ModalType } from "../../store/ModalStore";
 import TaskListProps from "./TaskListProps";
 import { observer } from "mobx-react";
 
-export const TaskList: FC<TaskListProps> = ({ setSelectedTask }) => {
-  const handleClick = (task: Task, modalType: ModalType) => {
+export const TaskList: FC<TaskListProps> = ({
+  setSelectedTask,
+  setEditModalOpen,
+  setDeleteModalOpen,
+}) => {
+  const handleDeleteClick = (task: Task) => {
     setSelectedTask(task);
-    ModalStore.setModalIsOpen(true, modalType);
+    setDeleteModalOpen(true);
+  };
+  const handleEditClick = (task: Task) => {
+    setSelectedTask(task);
+    setEditModalOpen(true);
   };
 
   return (
@@ -28,10 +35,10 @@ export const TaskList: FC<TaskListProps> = ({ setSelectedTask }) => {
               <div className={styles.todo_content}>{task.description}</div>
             </div>
             <div className={styles.button_container}>
-              <div onClick={() => handleClick(task, "editTask")}>
+              <div onClick={() => handleEditClick(task)}>
                 <img src="svg/edit.svg" alt="Edit" />
               </div>
-              <div onClick={() => handleClick(task, "deleteConfirm")}>
+              <div onClick={() => handleDeleteClick(task)}>
                 <img src="svg/delete.svg" alt="Delete" />
               </div>
             </div>

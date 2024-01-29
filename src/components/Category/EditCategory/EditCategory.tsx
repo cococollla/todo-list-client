@@ -3,14 +3,13 @@ import EditCategoryProps from "./EditCategory.props";
 import Category from "../../../interfaces/Category";
 import RequiredFiled from "../../../UiKit/Input/Input";
 import styles from "./EditCategory.module.css";
-import ModalStore from "../../../store/ModalStore";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
 import categoryStore from "../../../store/CategoryStore";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 
-const EditCategory: FC<EditCategoryProps> = ({ category }) => {
+const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
   const [categoryName, setCategoryName] = useState<string>(category.name);
   const [categoryDescription, setCategoryDescription] = useState<string>(
     category.description
@@ -22,12 +21,12 @@ const EditCategory: FC<EditCategoryProps> = ({ category }) => {
     useLoadingState();
 
   useEffect(() => {
-    if (ModalStore.modalIsOpen && ModalStore.modalType === "editCategory") {
+    if (isOpen) {
       setCategoryName(category.name);
       setCategoryDescription(category.description);
       setIsCategoryNameValid(true);
     }
-  }, [ModalStore.modalIsOpen, ModalStore.modalType]);
+  }, [isOpen]);
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -51,7 +50,7 @@ const EditCategory: FC<EditCategoryProps> = ({ category }) => {
       };
 
       const id = await categoryStore.editCategory(editCategory);
-      id && ModalStore.setModalIsOpen(false, "editCategory");
+      id && onClose();
     } catch {
       setError("Ошибка при обновлении категории");
     } finally {
@@ -61,7 +60,8 @@ const EditCategory: FC<EditCategoryProps> = ({ category }) => {
 
   return (
     <MainPopup
-      onClose={() => ModalStore.setModalIsOpen(false, "editCategory")}
+      isOpened={isOpen}
+      onClose={onClose}
       buttonText="Сохранить"
       error={error}
       isDisabled={!isCategoryNameValid}
