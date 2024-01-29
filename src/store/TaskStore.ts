@@ -36,10 +36,10 @@ class TaskStore {
     return undefined;
   }
 
-  async deleteTask(task: Task) {
+  async deleteTask(taskId: number) {
     try {
-      await this.taskApiService.deleteTask(task.id);
-      const deletedTasks = this.tasks.filter((t) => t.id !== task.id);
+      await this.taskApiService.deleteTask(taskId);
+      const deletedTasks = this.tasks.filter((t) => t.id !== taskId);
       this.setTasks(deletedTasks);
       return true;
     } catch {

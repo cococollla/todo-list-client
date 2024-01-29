@@ -74,17 +74,19 @@ const CreateCategory = () => {
           <RequiredFiled
             value={categoryName}
             isValueValid={isCategoryNameValid}
-            onValueChange={handleCategoryNameChange}
-            placeholderValue="Введите имя категории"
+            onChange={handleCategoryNameChange}
+            placeholder="Введите имя категории"
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
+            errorMessage="Это поле обязательное"
           />
         </div>
         <TextAreaField
           value={categoryDescription}
           isValueValid={isCategoryDescriptionValid}
-          onValueChange={handleTaskDescriptionChange}
-          placeholderValue="Введите описание"
+          onChange={handleTaskDescriptionChange}
+          placeholder="Введите описание"
+          errorMessage="Описание должно быть меньшне 512 символов"
         />
       </div>
     </MainPopup>

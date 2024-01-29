@@ -4,11 +4,13 @@ import styles from "./Input.module.css";
 
 const Input: FC<InputProps> = ({
   value,
-  onValueChange,
-  placeholderValue,
+  onChange,
+  placeholder,
   isValueValid,
   styleClassValid,
   styleClassInvalid,
+  errorMessage,
+  ...props
 }) => {
   return (
     <>
@@ -18,11 +20,11 @@ const Input: FC<InputProps> = ({
           <div className={styles.required_star}>*</div>
         </label>
         <input
-          placeholder={placeholderValue}
+          placeholder={placeholder}
           name="fieldName"
           type="text"
           value={value}
-          onChange={onValueChange}
+          onChange={onChange}
           className={
             !isValueValid ? `${styleClassInvalid}` : `${styleClassValid}`
           }
@@ -34,7 +36,7 @@ const Input: FC<InputProps> = ({
               : `${styles.error_message}`
           }
         >
-          Это поле обязательное
+          {errorMessage}
         </div>
       </div>
     </>

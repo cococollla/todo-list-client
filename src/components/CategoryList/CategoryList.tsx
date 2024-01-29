@@ -37,7 +37,7 @@ export const CategotyList: FC<CategoryListProps> = ({
               <div onClick={() => handleClick(category, "editCategory")}>
                 <img src="svg/edit.svg" alt="Edit" />
               </div>
-              <div onClick={() => handleClick(category, "deleteCategory")}>
+              <div onClick={() => handleClick(category, "deleteConfirm")}>
                 <img src="svg/delete.svg" alt="Delete" />
               </div>
             </div>

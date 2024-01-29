@@ -1,8 +1,7 @@
 import { FC } from "react";
 import PopupFooterProps from "./PopupFooter.props";
 import styles from "./PopupFooter.module.css";
-import SecondaryButton from "../Buttons/SecondaryButton/SecondaryButton";
-import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import Button from "../Button/Button";
 
 const PopupFooter: FC<PopupFooterProps> = ({
   primaryButtonText,
@@ -16,13 +15,20 @@ const PopupFooter: FC<PopupFooterProps> = ({
     <>
       {error && <div className={styles.modal_error}>{error}</div>}
       <div className={styles.button_container}>
-        <PrimaryButton
+        <Button
+          buttonType="primary"
           onClick={primaryButtonOnClick}
-          isDisabled={isPrimaryButtonIsDisabled}
-          buttonText={primaryButtonText}
+          disabled={isPrimaryButtonIsDisabled}
           isLoading={isLoading}
+          buttonText={primaryButtonText}
         />
-        <SecondaryButton onClick={onClose} buttonText="Закрыть" />
+        <Button
+          buttonType="secondary"
+          onClick={onClose}
+          disabled={false}
+          isLoading={false}
+          buttonText="Закрыть"
+        />
       </div>
     </>
   );

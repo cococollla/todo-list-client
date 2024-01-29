@@ -1,12 +1,11 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, InputHTMLAttributes } from "react";
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: string | undefined;
-  onValueChange: (value: ChangeEvent<HTMLInputElement>) => void;
-  placeholderValue: string;
   isValueValid: boolean;
   styleClassValid: string;
   styleClassInvalid: string;
+  errorMessage: string;
 }
 
 export default InputProps;

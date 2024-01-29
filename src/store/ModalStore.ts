@@ -2,11 +2,10 @@ import { makeAutoObservable } from "mobx";
 
 export type ModalType =
   | "createTask"
-  | "deleteTask"
   | "editTask"
   | "createCategory"
   | "editCategory"
-  | "deleteCategory";
+  | "deleteConfirm";
 
 class ModalStore {
   modalIsOpen = false;

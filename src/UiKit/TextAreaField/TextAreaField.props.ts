@@ -1,10 +1,10 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, TextareaHTMLAttributes } from "react";
 
-interface TextAreaFieldProps {
+interface TextAreaFieldProps
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   value: string;
   isValueValid: boolean;
-  onValueChange: (value: ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholderValue: string;
+  errorMessage: string;
 }
 
 export default TextAreaFieldProps;

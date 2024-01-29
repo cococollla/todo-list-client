@@ -5,18 +5,20 @@ import TextAreaFieldProps from "./TextAreaField.props";
 const TextAreaField: FC<TextAreaFieldProps> = ({
   value,
   isValueValid,
-  onValueChange,
-  placeholderValue,
+  onChange,
+  placeholder,
+  errorMessage,
+  ...props
 }) => {
   return (
     <>
       <div className={styles.input_box}>
         <label htmlFor="fieldName">Описание</label>
         <textarea
-          placeholder={placeholderValue}
+          placeholder={placeholder}
           name="fieldName"
           value={value}
-          onChange={onValueChange}
+          onChange={onChange}
           className={
             !isValueValid
               ? `${styles.textarea_invalid}`
@@ -30,7 +32,7 @@ const TextAreaField: FC<TextAreaFieldProps> = ({
               : `${styles.error_message}`
           }
         >
-          Описание должно быть меньше 1536 символов
+          {errorMessage}
         </div>
       </div>
     </>

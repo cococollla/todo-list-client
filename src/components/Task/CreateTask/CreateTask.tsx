@@ -1,7 +1,6 @@
 import { useState, useEffect, ChangeEvent, ReactNode } from "react";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import RequiredField from "../../../UiKit/Input/Input";
-import CategoryDropdown from "../../../UiKit/CategoryDropdown/CategoryDropdown";
 import Category from "../../../interfaces/Category";
 import { TaskDto } from "../../../interfaces/TaskDto";
 import taskStore from "../../../store/TaskStore";
@@ -11,6 +10,7 @@ import categoryStore from "../../../store/CategoryStore";
 import { observer } from "mobx-react";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { useLoadingState } from "../../../hooks/useLoadingState";
+import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 
 const CreateTask = () => {
   const [taskName, setTaskName] = useState<string>("");
@@ -81,10 +81,11 @@ const CreateTask = () => {
           <RequiredField
             value={taskName}
             isValueValid={isTaskNameValid}
-            onValueChange={handleTaskNameChange}
-            placeholderValue="Введите имя задачи"
+            onChange={handleTaskNameChange}
+            placeholder="Введите имя задачи"
             styleClassValid={styles.required_field_task}
             styleClassInvalid={styles.required_field_task_invalid}
+            errorMessage="Это поле обязательное"
           />
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>
@@ -97,8 +98,9 @@ const CreateTask = () => {
         <TextAreaField
           value={taskDescription}
           isValueValid={isTaskDescriptionValid}
-          onValueChange={handleTaskDescriptionChange}
-          placeholderValue="Введите описание"
+          onChange={handleTaskDescriptionChange}
+          placeholder="Введите описание"
+          errorMessage="Описание должно быть меньшне 1536"
         />
       </div>
     </MainPopup>

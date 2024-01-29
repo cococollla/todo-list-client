@@ -31,7 +31,7 @@ export const TaskList: FC<TaskListProps> = ({ setSelectedTask }) => {
               <div onClick={() => handleClick(task, "editTask")}>
                 <img src="svg/edit.svg" alt="Edit" />
               </div>
-              <div onClick={() => handleClick(task, "deleteTask")}>
+              <div onClick={() => handleClick(task, "deleteConfirm")}>
                 <img src="svg/delete.svg" alt="Delete" />
               </div>
             </div>

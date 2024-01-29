@@ -41,11 +41,11 @@ class CategoryStore {
     return undefined;
   }
 
-  async deleteCategory(category: Category) {
+  async deleteCategory(categoryId: number) {
     try {
-      await this.categoryApiService.deleteCategory(category.id);
+      await this.categoryApiService.deleteCategory(categoryId);
       const deletedCategories = this.categories.filter(
-        (c) => c.id !== category.id
+        (c) => c.id !== categoryId
       );
       this.setCategories(deletedCategories);
       return true;
