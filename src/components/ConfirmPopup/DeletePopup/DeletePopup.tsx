@@ -1,18 +1,15 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import DeleteCategoryProps from "./DeletePopup.props";
 import styles from "./DeletePopup.module.css";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
-import categoryStore from "../../../store/CategoryStore";
 import { useLoadingState } from "../../../hooks/useLoadingState";
-import Category from "../../../interfaces/Category";
-import Task, { isTask } from "../../../interfaces/Task";
-import taskStore from "../../../store/TaskStore";
 
-const DeletePopup: FC<DeleteCategoryProps<Category | Task>> = ({
-  data,
+const DeletePopup: FC<DeleteCategoryProps> = ({
   title,
   isOpen,
   onClose,
+  onAccept,
+  contentMessage,
 }) => {
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
@@ -24,14 +21,12 @@ const DeletePopup: FC<DeleteCategoryProps<Category | Task>> = ({
   const handleDelte = async () => {
     setIsLoading(true);
     try {
-      const successful = isTask(data)
-        ? await taskStore.deleteTask(data.id)
-        : await categoryStore.deleteCategory(data.id);
+      const successful = await onAccept();
       successful ? onClose() : setError("Произошла ошибка при удалении");
     } catch {
       setError("Произошла ошибка при удалении");
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -46,10 +41,7 @@ const DeletePopup: FC<DeleteCategoryProps<Category | Task>> = ({
       onSubmit={handleDelte}
       title={title}
     >
-      <div className={styles.msg_delete}>
-        Вы уверены, что хотите удалить{" "}
-        {isTask(data) ? `задачу ${data.name}` : `категорию ${data.name}`}?
-      </div>
+      <div className={styles.msg_delete}>{contentMessage}</div>
     </MainPopup>
   );
 };

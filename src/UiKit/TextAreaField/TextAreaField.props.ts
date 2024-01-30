@@ -1,7 +1,10 @@
-import { ChangeEvent, TextareaHTMLAttributes } from "react";
+import { DetailedHTMLProps, TextareaHTMLAttributes } from "react";
 
 interface TextAreaFieldProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  extends DetailedHTMLProps<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  > {
   value: string;
   isValueValid: boolean;
   errorMessage: string;

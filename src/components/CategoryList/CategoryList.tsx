@@ -4,6 +4,7 @@ import categoryStore from "../../store/CategoryStore";
 import styles from "./CategotyList.module.css";
 import { observer } from "mobx-react";
 import CategoryListProps from "./CategoryList.props";
+import CategoryItemList from "../ItemList/CategoryItemList/CategoryItemList";
 
 export const CategotyList: FC<CategoryListProps> = ({
   setSelectedCategory,
@@ -27,22 +28,11 @@ export const CategotyList: FC<CategoryListProps> = ({
         </div>
       ) : (
         categoryStore.categories.map((category) => (
-          <div key={category.id.toString()} className={styles.item_category}>
-            <div>
-              <div className={styles.category_title}>{category.name}</div>
-              <div className={styles.category_content}>
-                {category.description}
-              </div>
-            </div>
-            <div className={styles.button_container}>
-              <div onClick={() => handleEditClick(category)}>
-                <img src="svg/edit.svg" alt="Edit" />
-              </div>
-              <div onClick={() => handleDeleteClick(category)}>
-                <img src="svg/delete.svg" alt="Delete" />
-              </div>
-            </div>
-          </div>
+          <CategoryItemList
+            data={category}
+            onHandleDelete={handleDeleteClick}
+            onHandleEdit={handleEditClick}
+          />
         ))
       )}
     </>
