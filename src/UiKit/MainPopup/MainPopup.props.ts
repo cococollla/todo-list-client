@@ -9,7 +9,7 @@ interface MainPopupProps {
   onSubmit: () => void;
   isDisabled: boolean;
   isLoading: boolean;
-  error: string | null;
+  exdentFooterContent?: ReactNode;
 }
 
 export default MainPopupProps;

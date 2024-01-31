@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./DropdownList.module.css";
 import DropDownProps from "./DropdownList.props";
 
-const DropdownList = <T extends { id: number }>({
+const DropdownList = <T extends { id: number; name: string }>({
   selectedOption,
   onSelect,
   options,
-  renderOption,
   selectMessage,
 }: DropDownProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,16 +37,12 @@ const DropdownList = <T extends { id: number }>({
   };
 
   return (
-    <div ref={dropDownRef} className={styles.dropdown}>
+    <div className={styles.dropdown} ref={dropDownRef}>
       <div
         className={`${styles.dropdown_header} ${isOpen ? styles.open : ""}`}
         onClick={handleOpenDropdown}
       >
-        {selectedOption ? (
-          <div>{renderOption(selectedOption)}</div>
-        ) : (
-          selectMessage
-        )}
+        {selectedOption ? <div>{selectedOption.name}</div> : selectMessage}
         <img
           src={
             isOpen ? "svg/drop-down-arrow-2.svg" : "svg/drop-down-arrow-1.svg"
@@ -64,7 +59,7 @@ const DropdownList = <T extends { id: number }>({
                 selectedOption?.id === option.id ? styles.selected : ""
               }`}
             >
-              {renderOption(option)}
+              {option.name}
             </div>
           ))}
         </div>

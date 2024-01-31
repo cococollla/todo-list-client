@@ -7,7 +7,7 @@ interface ButtonProps
   > {
   buttonType: "primary" | "secondary";
   buttonText: string;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 export default ButtonProps;

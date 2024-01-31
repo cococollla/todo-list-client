@@ -1,27 +1,26 @@
-import { FC } from "react";
-import styles from "./TaskItemList.module.css";
-import CategoryName from "../../CategoryName/CategoryName";
-import TaskItemListProps from "./TaskItemList.Props";
+import ItemListProps from "./ItemList.props";
+import styles from "./ItemList.module.css";
 
-const TaskItemList: FC<TaskItemListProps> = ({
+const ItemList = <T extends { id: number; name: string; description: string }>({
   data,
-  onHandleDelete,
-  onHandleEdit,
-}) => {
+  onDelete,
+  onEdit,
+  extendTitle,
+}: ItemListProps<T>) => {
   return (
     <div key={data.id.toString()} className={styles.item_todo}>
       <div className={styles.todo_content}>
         <div className={styles.todoTitle}>
           <div>{data.name}</div>
-          <CategoryName categoryId={data.categoryId} />
+          {extendTitle}
         </div>
         <div className={styles.todo_content}>{data.description}</div>
       </div>
       <div className={styles.button_container}>
-        <div onClick={() => onHandleEdit(data)}>
+        <div onClick={() => onEdit(data)}>
           <img src="svg/edit.svg" alt="Edit" />
         </div>
-        <div onClick={() => onHandleDelete(data)}>
+        <div onClick={() => onDelete(data)}>
           <img src="svg/delete.svg" alt="Delete" />
         </div>
       </div>
@@ -29,4 +28,4 @@ const TaskItemList: FC<TaskItemListProps> = ({
   );
 };
 
-export default TaskItemList;
+export default ItemList;

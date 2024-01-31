@@ -17,6 +17,11 @@
   margin-top: 10px;
   z-index: 1;
   background-color: #dbe2ef;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-color: #3f72af #dbe2ef;
+  scrollbar-width: auto;
 }
 
 .selected {

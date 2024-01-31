@@ -6,7 +6,7 @@ const PopupHeader: FC<PopupHeaderProps> = ({ title, onClose }) => {
   return (
     <div className={styles.title}>
       <div>
-        <span className={styles.taskTitle}>{title}</span>
+        <span className={styles.title_text}>{title}</span>
       </div>
       <div>
         <img src="svg/close.svg" onClick={onClose} />

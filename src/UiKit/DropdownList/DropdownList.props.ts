@@ -1,10 +1,7 @@
-import { ReactElement, ReactNode } from "react";
-
-interface DropDownProps<T> {
+interface DropDownProps<T extends { id: number; name: string }> {
   selectedOption: T | undefined;
   onSelect: (option: T) => void;
   options: T[];
-  renderOption: (option: T) => ReactNode;
   selectMessage: string;
 }
 

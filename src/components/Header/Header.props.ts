@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
+
 interface HeaderProps {
-  setModalOpen: (value: boolean) => void;
-  navLink: string;
+  activeModal: ReactNode;
 }
 
 export default HeaderProps;
