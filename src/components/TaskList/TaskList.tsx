@@ -3,11 +3,12 @@ import styles from "./TaskList.module.css";
 import Task from "../../interfaces/Task";
 import taskStore from "../../store/TaskStore";
 import { observer } from "mobx-react";
-import ItemList from "../ItemList/TaskItemList/TaskItemList";
 import EditTask from "../Task/EditTask/EditTask";
 import TaskStore from "../../store/TaskStore";
 import Dialog from "../../UiKit/Dialog/Dialog";
 import { useLoadingState } from "../../hooks/useLoadingState";
+import ItemList from "../ItemList/ItemList";
+import CategoryName from "../CategoryName/CategoryName";
 
 export const TaskList = ({}) => {
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -63,6 +64,7 @@ export const TaskList = ({}) => {
             data={task}
             onDelete={handleDeleteClick}
             onEdit={handleEditClick}
+            extendTitle={<CategoryName categoryId={task.categoryId} />}
           />
         ))
       )}

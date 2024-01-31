@@ -3,11 +3,11 @@ import Category from "../../interfaces/Category";
 import categoryStore from "../../store/CategoryStore";
 import styles from "./CategotyList.module.css";
 import { observer } from "mobx-react";
-import CategoryItemList from "../ItemList/CategoryItemList/CategoryItemList";
 import EditCategory from "../Category/EditCategory/EditCategory";
 import CategoryStore from "../../store/CategoryStore";
 import Dialog from "../../UiKit/Dialog/Dialog";
 import { useLoadingState } from "../../hooks/useLoadingState";
+import ItemList from "../ItemList/ItemList";
 
 export const CategotyList = ({}) => {
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -22,7 +22,7 @@ export const CategotyList = ({}) => {
     useLoadingState();
 
   useEffect(() => {
-    if (!deleteModalOpen) {
+    if (deleteModalOpen) {
       setError(null);
     }
   }, [deleteModalOpen]);
@@ -62,7 +62,7 @@ export const CategotyList = ({}) => {
         </div>
       ) : (
         categoryStore.categories.map((category) => (
-          <CategoryItemList
+          <ItemList
             data={category}
             onDelete={handleDeleteClick}
             onEdit={handleEditClick}
@@ -86,7 +86,9 @@ export const CategotyList = ({}) => {
         title="Удаление категории"
         isLoading={isLoading}
         isDisabled={isDiasbled}
-        extraContent={<div className={styles.error}>{error}</div>}
+        extraContent={
+          !error ? null : <div className={styles.error_modal}>{error}</div>
+        }
       />
     </>
   );

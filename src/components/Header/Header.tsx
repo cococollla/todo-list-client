@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import HeaderProps from "./Header.props";
 import CustomLink from "../CustomLink/CustomLink";
 
-const Header: FC<HeaderProps> = ({ setModalOpen, navLink }) => {
+const Header: FC<HeaderProps> = ({ activeModal }) => {
   return (
     <div className={styles.header}>
       <div className={styles.nav_item}>
@@ -17,9 +17,7 @@ const Header: FC<HeaderProps> = ({ setModalOpen, navLink }) => {
         </div>
       </div>
       <div>
-        <div className={styles.nav_link} onClick={() => setModalOpen(true)}>
-          {navLink}
-        </div>
+        <div className={styles.nav_link}>{activeModal}</div>
       </div>
     </div>
   );

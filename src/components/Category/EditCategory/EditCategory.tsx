@@ -22,7 +22,7 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
     useLoadingState();
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
       setCategoryName(category.name);
       setCategoryDescription(category.description);
       setIsCategoryNameValid(true);

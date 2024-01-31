@@ -7,11 +7,8 @@ import taskStore from "./store/TaskStore";
 import categoryStore from "./store/CategoryStore";
 
 const App: FC = () => {
-  const [isCreateTaskModalOpen, setCreateTaskModalOpen] =
-    useState<boolean>(false);
   const [isCreateCategoryModalOpen, setCreateCategoryModalOpen] =
     useState<boolean>(false);
-  const linkToTasks = useMatch("/tasks");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,32 +23,10 @@ const App: FC = () => {
 
   return (
     <div className="App">
-      <Header
-        setModalOpen={
-          linkToTasks ? setCreateTaskModalOpen : setCreateCategoryModalOpen
-        }
-        navLink={linkToTasks ? "Добавить задачу" : "Добавить категорию"}
-      />
       <Routes>
         <Route path="*" element={<Navigate to="tasks" replace={true} />} />
-        <Route
-          path="/tasks"
-          element={
-            <TaskPage
-              isOpen={isCreateTaskModalOpen}
-              onClose={setCreateTaskModalOpen}
-            />
-          }
-        />
-        <Route
-          path="/categories"
-          element={
-            <CategoryPage
-              isOpen={isCreateCategoryModalOpen}
-              onClose={() => setCreateCategoryModalOpen(false)}
-            />
-          }
-        />
+        <Route path="/tasks" element={<TaskPage />} />
+        <Route path="/categories" element={<CategoryPage />} />
       </Routes>
     </div>
   );

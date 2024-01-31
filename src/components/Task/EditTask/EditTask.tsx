@@ -26,7 +26,7 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
     useLoadingState();
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
       setTaskName(task.name);
       setTaskDescription(task.description);
       setCategoryId(task.categoryId);

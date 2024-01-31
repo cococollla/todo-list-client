@@ -1,15 +1,18 @@
-import { FC } from "react";
-import styles from "./TaskItemList.module.css";
-import CategoryName from "../../CategoryName/CategoryName";
-import TaskItemListProps from "./TaskItemList.Props";
+import ItemListProps from "./ItemList.props";
+import styles from "./ItemList.module.css";
 
-const TaskItemList: FC<TaskItemListProps> = ({ data, onDelete, onEdit }) => {
+const ItemList = <T extends { id: number; name: string; description: string }>({
+  data,
+  onDelete,
+  onEdit,
+  extendTitle,
+}: ItemListProps<T>) => {
   return (
     <div key={data.id.toString()} className={styles.item_todo}>
       <div className={styles.todo_content}>
         <div className={styles.todoTitle}>
           <div>{data.name}</div>
-          <CategoryName categoryId={data.categoryId} />
+          {extendTitle}
         </div>
         <div className={styles.todo_content}>{data.description}</div>
       </div>
@@ -25,4 +28,4 @@ const TaskItemList: FC<TaskItemListProps> = ({ data, onDelete, onEdit }) => {
   );
 };
 
-export default TaskItemList;
+export default ItemList;

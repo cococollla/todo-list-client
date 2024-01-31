@@ -24,7 +24,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     useLoadingState();
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
       setTaskName("");
       setTaskDescription("");
       setCategoryId(0);

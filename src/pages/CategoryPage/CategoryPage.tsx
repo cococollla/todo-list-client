@@ -1,14 +1,25 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import CategoryList from "../../components/CategoryList/CategoryList";
 import CreateCategory from "../../components/Category/CreateCategory/CreateCategory";
 import { observer } from "mobx-react";
 import CategoryPageProps from "./CategoryPage.props";
+import Header from "../../components/Header/Header";
 
-const CategoryPage: FC<CategoryPageProps> = ({ isOpen, onClose }) => {
+const CategoryPage = () => {
+  const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
+
   return (
     <div>
+      <Header
+        activeModal={
+          <div onClick={() => setCreateModalOpen(true)}>Создать категорию</div>
+        }
+      />
       <CategoryList />
-      <CreateCategory isOpen={isOpen} onClose={() => onClose(false)} />
+      <CreateCategory
+        isOpen={isCreateModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+      />
     </div>
   );
 };
