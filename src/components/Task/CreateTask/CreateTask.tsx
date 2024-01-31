@@ -19,11 +19,12 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(false);
   const [isTaskDescriptionValid, setIsTaskDescriptionValid] =
     useState<boolean>(true);
+  const [isDiasbled, setIsDisabled] = useState<boolean>(true);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) {
       setTaskName("");
       setTaskDescription("");
       setCategoryId(0);
@@ -31,6 +32,10 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       setError(null);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setIsDisabled(isLoading || !isTaskDescriptionValid || !isTaskNameValid);
+  }, [isLoading, isTaskDescriptionValid, isTaskNameValid]);
 
   const handleCreateTask = async () => {
     setIsLoading(true);
@@ -53,7 +58,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTaskName(value);
-    setIsTaskNameValid(!!value.trim());
+    setIsTaskNameValid(!!value.trim() && value.length <= 255);
   };
 
   const handleCategorySelect = (selectedCategory: Category) => {
@@ -72,7 +77,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       onClose={onClose}
       buttonText="Создать"
       error={error}
-      isDisabled={!isTaskNameValid}
+      isDisabled={isDiasbled}
       isLoading={isLoading}
       onSubmit={handleCreateTask}
       title="Создание задачи"

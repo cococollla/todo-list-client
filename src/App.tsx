@@ -15,8 +15,10 @@ const App: FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await taskStore.fetchTasks();
-      await categoryStore.fetchCategories();
+      const taskData = taskStore.fetchTasks();
+      const categoryData = categoryStore.fetchCategories();
+      const promises = [taskData, categoryData];
+      Promise.allSettled(promises);
     };
 
     fetchData();

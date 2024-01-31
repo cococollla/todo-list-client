@@ -21,11 +21,12 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
   const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(true);
   const [isTaskDescriptionValid, setIsTaskDescriptionValid] =
     useState<boolean>(true);
+  const [isDiasbled, setIsDisabled] = useState<boolean>(true);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) {
       setTaskName(task.name);
       setTaskDescription(task.description);
       setCategoryId(task.categoryId);
@@ -34,6 +35,10 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
       setError(null);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setIsDisabled(isLoading || !isTaskDescriptionValid || !isTaskNameValid);
+  }, [isLoading, isTaskDescriptionValid, isTaskNameValid]);
 
   const handleEditTask = async () => {
     setIsLoading(true);
@@ -76,7 +81,7 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
       onClose={onClose}
       buttonText="Сохранить"
       error={error}
-      isDisabled={!isTaskNameValid}
+      isDisabled={isDiasbled}
       isLoading={isLoading}
       onSubmit={handleEditTask}
       title="Редактирование задачи"

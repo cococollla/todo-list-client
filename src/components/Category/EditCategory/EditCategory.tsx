@@ -17,16 +17,23 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
   const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
     useState<boolean>(true);
   const [isCategoryNameValid, setIsCategoryNameValid] = useState<boolean>(true);
+  const [isDiasbled, setIsDisabled] = useState<boolean>(true);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) {
       setCategoryName(category.name);
       setCategoryDescription(category.description);
       setIsCategoryNameValid(true);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setIsDisabled(
+      isLoading || !isCategoryDescriptionValid || !isCategoryNameValid
+    );
+  }, [isLoading, isCategoryDescriptionValid, isCategoryNameValid]);
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -64,7 +71,7 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
       onClose={onClose}
       buttonText="Сохранить"
       error={error}
-      isDisabled={!isCategoryNameValid}
+      isDisabled={isDiasbled}
       isLoading={isLoading}
       onSubmit={handleEditCategory}
       title="Редиктирование категории"

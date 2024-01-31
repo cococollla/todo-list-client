@@ -16,17 +16,24 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
     useState<boolean>(false);
   const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
     useState<boolean>(true);
+  const [isDiasbled, setIsDisabled] = useState<boolean>(true);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) {
       setCategoryName("");
       setCategoryDescription("");
       setIsCategoryNameValid(false);
       setError(null);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setIsDisabled(
+      isLoading || !isCategoryDescriptionValid || !isCategoryNameValid
+    );
+  }, [isLoading, isCategoryDescriptionValid, isCategoryNameValid]);
 
   const handleCreateCategory = async () => {
     setIsLoading(true);
@@ -47,14 +54,16 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const isValid = !!value.trim() && value.length <= 255;
     setCategoryName(value);
-    setIsCategoryNameValid(!!value.trim());
+    setIsCategoryNameValid(isValid);
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
+    const isValid = value.length <= 512;
     setCategoryDescription(value);
-    setIsCategoryDescriptionValid(value.length <= 512);
+    setIsCategoryDescriptionValid(isValid);
   };
 
   return (
@@ -63,7 +72,7 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
       onClose={onClose}
       buttonText="Создать"
       error={error}
-      isDisabled={!isCategoryNameValid}
+      isDisabled={isDiasbled}
       isLoading={isLoading}
       onSubmit={handleCreateCategory}
       title="Создание категории"

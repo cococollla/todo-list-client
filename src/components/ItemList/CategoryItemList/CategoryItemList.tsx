@@ -4,8 +4,8 @@ import styles from "./CategoryItemList.module.css";
 
 const CategoryItemList: FC<CategoryItemListProps> = ({
   data,
-  onHandleDelete,
-  onHandleEdit,
+  onDelete,
+  onEdit,
 }) => {
   return (
     <div key={data.id.toString()} className={styles.item_category}>
@@ -14,10 +14,10 @@ const CategoryItemList: FC<CategoryItemListProps> = ({
         <div className={styles.category_content}>{data.description}</div>
       </div>
       <div className={styles.button_container}>
-        <div onClick={() => onHandleEdit(data)}>
+        <div onClick={() => onEdit(data)}>
           <img src="svg/edit.svg" alt="Edit" />
         </div>
-        <div onClick={() => onHandleDelete(data)}>
+        <div onClick={() => onDelete(data)}>
           <img src="svg/delete.svg" alt="Delete" />
         </div>
       </div>

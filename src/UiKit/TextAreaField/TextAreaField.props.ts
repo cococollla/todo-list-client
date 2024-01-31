@@ -5,7 +5,6 @@ interface TextAreaFieldProps
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement
   > {
-  value: string;
   isValueValid: boolean;
   errorMessage: string;
 }

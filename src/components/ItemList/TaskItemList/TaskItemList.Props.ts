@@ -3,8 +3,8 @@ import Task from "../../../interfaces/Task";
 
 interface TaskItemListProps {
   data: Task;
-  onHandleDelete: (value: Task) => void;
-  onHandleEdit: (value: Task) => void;
+  onDelete: (value: Task) => void;
+  onEdit: (value: Task) => void;
 }
 
 export default TaskItemListProps;

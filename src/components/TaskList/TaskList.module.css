@@ -3,7 +3,8 @@
   flex-direction: row;
 }
 
-.error {
+.error,
+.error_modal {
   margin: 10px;
   padding: 20px 0px;
   display: flex;
@@ -14,4 +15,8 @@
   border-radius: 4px;
   font-family: "Roboto", sans-serif;
   font-size: 40px;
+}
+
+.error_modal {
+  font-size: 20px;
 }

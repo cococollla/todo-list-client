@@ -5,7 +5,6 @@ interface InputProps
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  value: string | undefined;
   isValueValid: boolean;
   styleClassValid: string;
   styleClassInvalid: string;
