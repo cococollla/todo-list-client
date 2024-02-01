@@ -61,6 +61,7 @@ export const TaskList = ({}) => {
       ) : (
         taskStore.tasks.map((task) => (
           <ItemList
+            key={task.id}
             data={task}
             onDelete={handleDeleteClick}
             onEdit={handleEditClick}

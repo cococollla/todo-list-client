@@ -80,7 +80,9 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
       isOpened={isOpen}
       onClose={onClose}
       buttonText="Сохранить"
-      error={error}
+      exdentFooterContent={
+        !error ? null : <div className={styles.modal_error}>{error}</div>
+      }
       isDisabled={isDiasbled}
       isLoading={isLoading}
       onSubmit={handleEditTask}

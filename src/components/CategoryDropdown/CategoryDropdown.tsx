@@ -18,10 +18,9 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
 
   return (
     <DropdownList
-      selectedOption={selectedCategory}
       onSelect={onCategorySelect}
       options={CategoryStore.categories}
-      renderOption={renderCategoryOption}
+      selectedOption={selectedCategory}
       selectMessage="Выберите категорию"
     />
   );

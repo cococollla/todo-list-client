@@ -10,11 +10,11 @@ const MainPopup: FC<MainPopupProps> = ({
   onClose,
   buttonText,
   children,
-  error,
   isDisabled,
   isLoading,
   onSubmit,
   title,
+  exdentFooterContent,
 }) => {
   return (
     <OverlayingPopup isOpen={isOpened} onClose={() => onClose()}>
@@ -27,7 +27,7 @@ const MainPopup: FC<MainPopupProps> = ({
           isPrimaryButtonIsDisabled={isDisabled}
           isLoading={isLoading}
           onClose={() => onClose()}
-          error={error}
+          exdentContent={exdentFooterContent}
         />
       </div>
     </OverlayingPopup>

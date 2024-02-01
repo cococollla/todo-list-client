@@ -9,11 +9,11 @@ const PopupFooter: FC<PopupFooterProps> = ({
   isPrimaryButtonIsDisabled,
   isLoading,
   onClose,
-  error,
+  exdentContent,
 }) => {
   return (
     <>
-      {error && <div className={styles.modal_error}>{error}</div>}
+      {exdentContent}
       <div className={styles.button_container}>
         <Button
           buttonType="primary"

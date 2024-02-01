@@ -76,7 +76,9 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       isOpened={isOpen}
       onClose={onClose}
       buttonText="Создать"
-      error={error}
+      exdentFooterContent={
+        !error ? null : <div className={styles.modal_error}>{error}</div>
+      }
       isDisabled={isDiasbled}
       isLoading={isLoading}
       onSubmit={handleCreateTask}

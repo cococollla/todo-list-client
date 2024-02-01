@@ -1,10 +1,12 @@
+import { ReactNode } from "react";
+
 interface PopupFooterProps {
   primaryButtonText: string;
   primaryButtonOnClick: () => void;
   isPrimaryButtonIsDisabled: boolean;
   isLoading: boolean;
-  error: string | null;
   onClose: () => void;
+  exdentContent?: ReactNode;
 }
 
 export default PopupFooterProps;
