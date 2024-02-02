@@ -17,6 +17,9 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
   const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
     useState<boolean>(true);
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
+  const [errorInputName, setErrorInputName] = useState<string | undefined>(
+    "Это поле обяхательное"
+  );
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
@@ -30,9 +33,7 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    setIsDisabled(
-      isLoading || !isCategoryDescriptionValid || !isCategoryNameValid
-    );
+    setIsDisabled(isLoading || !isCategoryDescriptionValid || !!errorInputName);
   }, [isLoading, isCategoryDescriptionValid, isCategoryNameValid]);
 
   const handleCreateCategory = async () => {
@@ -44,7 +45,7 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
       };
 
       const id = await CategoryStore.addCategory(newCategory);
-      id && onClose();
+      onClose();
     } catch {
       setError("Ошибка при создании категории");
     } finally {
@@ -54,9 +55,15 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const isValid = !!value.trim() && value.length <= 255;
+    const isEmpty = !!value.trim();
+    const isLenght = value.length <= 255;
     setCategoryName(value);
-    setIsCategoryNameValid(isValid);
+    isEmpty
+      ? setErrorInputName(undefined)
+      : setErrorInputName("Это поле обязательное");
+    isLenght
+      ? setErrorInputName(undefined)
+      : setErrorInputName("Длина должна быть меньше 255 символов");
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -83,12 +90,12 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
         <div>
           <RequiredFiled
             value={categoryName}
-            isValueValid={isCategoryNameValid}
             onChange={handleCategoryNameChange}
             placeholder="Введите имя категории"
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
-            errorMessage="Это поле обязательное"
+            errorMessage={errorInputName}
+            helperText="Введите название категории"
           />
         </div>
         <TextAreaField

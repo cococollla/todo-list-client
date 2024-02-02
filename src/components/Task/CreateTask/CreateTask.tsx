@@ -88,7 +88,6 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
         <div className={styles.item_row}>
           <RequiredField
             value={taskName}
-            isValueValid={isTaskNameValid}
             onChange={handleTaskNameChange}
             placeholder="Введите имя задачи"
             styleClassValid={styles.required_field_task}

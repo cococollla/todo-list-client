@@ -1,34 +1,47 @@
 import { FC, useEffect, useState } from "react";
-import { Navigate, Route, Routes, useMatch } from "react-router-dom";
-import Header from "./components/Header/Header";
+import { Navigate, Route, Routes } from "react-router-dom";
 import TaskPage from "./pages/TaskPage/TaskPage";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import taskStore from "./store/TaskStore";
 import categoryStore from "./store/CategoryStore";
+import styles from "./App.module.css";
 
 const App: FC = () => {
-  const [isCreateCategoryModalOpen, setCreateCategoryModalOpen] =
-    useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const taskData = taskStore.fetchTasks();
-      const categoryData = categoryStore.fetchCategories();
-      const promises = [taskData, categoryData];
-      Promise.allSettled(promises);
+      try {
+        const promises = [
+          taskStore.fetchTasks(),
+          categoryStore.fetchCategories(),
+        ];
+        await Promise.allSettled(promises);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchData();
   }, []);
 
   return (
-    <div className="App">
-      <Routes>
-        <Route path="*" element={<Navigate to="tasks" replace={true} />} />
-        <Route path="/tasks" element={<TaskPage />} />
-        <Route path="/categories" element={<CategoryPage />} />
-      </Routes>
-    </div>
+    <>
+      {isLoading && (
+        <div className={styles.loader_wrapper}>
+          <div className={styles.loader}></div>
+        </div>
+      )}
+      {!isLoading && (
+        <div className="App">
+          <Routes>
+            <Route path="*" element={<Navigate to="tasks" replace={true} />} />
+            <Route path="/tasks" element={<TaskPage />} />
+            <Route path="/categories" element={<CategoryPage />} />
+          </Routes>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -18,6 +18,7 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
     useState<boolean>(true);
   const [isCategoryNameValid, setIsCategoryNameValid] = useState<boolean>(true);
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
+  const [errorInputName, setErrorInputName] = useState<string | undefined>();
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
@@ -37,8 +38,15 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const isEmpty = !!value.trim();
+    const isLenght = value.length <= 255;
     setCategoryName(value);
-    setIsCategoryNameValid(!!value.trim());
+    isEmpty
+      ? setErrorInputName(undefined)
+      : setErrorInputName("Это поле обязательное");
+    isLenght
+      ? setErrorInputName(undefined)
+      : setErrorInputName("Длина должна быть меньше 255 символов");
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -83,12 +91,12 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
         <div>
           <RequiredFiled
             value={categoryName}
-            isValueValid={isCategoryNameValid}
             onChange={handleCategoryNameChange}
             placeholder="Введите имя категории"
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
-            errorMessage="Это поле обязательное"
+            errorMessage={errorInputName}
+            helperText="Введите название категории"
           />
         </div>
         <TextAreaField
