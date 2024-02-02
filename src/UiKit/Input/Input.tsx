@@ -26,16 +26,14 @@ const Input: FC<InputProps> = ({
           value={value}
           onChange={onChange}
           className={
-            !!errorMessage ? `${styleClassInvalid}` : `${styleClassValid}`
+            errorMessage ? `${styleClassInvalid}` : `${styleClassValid}`
           }
         ></input>
-        <div className={styles.helper_text_container}>
-          {!!errorMessage ? (
-            <div className={styles.error_message}>{errorMessage}</div>
-          ) : (
-            <div className={styles.herlper_text}>{helperText}</div>
-          )}
-        </div>
+        {errorMessage ? (
+          <div className={styles.error_message}>{errorMessage}</div>
+        ) : (
+          <div className={styles.herlper_text}>{helperText}</div>
+        )}
       </div>
     </>
   );

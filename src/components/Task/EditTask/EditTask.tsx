@@ -18,9 +18,12 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
     task.description
   );
   const [categoryId, setCategoryId] = useState<number>(task.categoryId);
-  const [isTaskNameValid, setIsTaskNameValid] = useState<boolean>(true);
-  const [isTaskDescriptionValid, setIsTaskDescriptionValid] =
-    useState<boolean>(true);
+  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
+    null
+  );
+  const [errorMessageTextArea, setErrorMessageTextArea] = useState<
+    string | null
+  >(null);
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
@@ -30,15 +33,17 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
       setTaskName(task.name);
       setTaskDescription(task.description);
       setCategoryId(task.categoryId);
-      setIsTaskNameValid(true);
-      setIsTaskDescriptionValid(true);
+      setErrorMessageInput(null);
+      setErrorMessageTextArea(null);
       setError(null);
     }
   }, [isOpen]);
 
   useEffect(() => {
-    setIsDisabled(isLoading || !isTaskDescriptionValid || !isTaskNameValid);
-  }, [isLoading, isTaskDescriptionValid, isTaskNameValid]);
+    setIsDisabled(
+      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
+    );
+  }, [isLoading, errorMessageInput, errorMessageTextArea]);
 
   const handleEditTask = async () => {
     setIsLoading(true);
@@ -61,8 +66,16 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
 
   const handleTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const isEmpty = !!value.trim();
+    const isLengthValid = value.length <= 255;
     setTaskName(value);
-    setIsTaskNameValid(!!value.trim() && value.length <= 255);
+    if (isEmpty && isLengthValid) {
+      setErrorMessageInput(null);
+    } else if (isEmpty && !isLengthValid) {
+      setErrorMessageInput("Длина должна быть меньше 255 символов");
+    } else {
+      setErrorMessageInput("Это поле обязательное");
+    }
   };
 
   const handleCategorySelect = (selectedCategory: Category) => {
@@ -71,8 +84,11 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
+    const isLengthValid = value.length <= 1536;
     setTaskDescription(value);
-    setIsTaskDescriptionValid(value.length <= 1536);
+    isLengthValid
+      ? setErrorMessageTextArea(null)
+      : setErrorMessageTextArea("Описание должно быть меньше 1536 символов");
   };
 
   return (
@@ -96,7 +112,7 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
             placeholder="Введите имя задачи"
             styleClassValid={styles.required_field_task}
             styleClassInvalid={styles.required_field_task_invalid}
-            errorMessage="Это поле обязательное"
+            errorMessage={errorMessageInput}
           />
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>
@@ -108,10 +124,9 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
         </div>
         <TextAreaField
           value={taskDescription}
-          isValueValid={isTaskDescriptionValid}
           onChange={handleTaskDescriptionChange}
           placeholder="Введите описание"
-          errorMessage="Описание должно быть меньшне 1536"
+          errorMessage={errorMessageTextArea}
         />
       </div>
     </MainPopup>

@@ -7,7 +7,7 @@ interface InputProps
   > {
   styleClassValid: string;
   styleClassInvalid: string;
-  errorMessage?: string;
+  errorMessage: string | null;
   helperText?: string;
 }
 
