@@ -12,11 +12,13 @@ import CreateCategiryProps from "./CreateTask.props";
 const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryDescription, setCategoryDescription] = useState<string>("");
-  const [isCategoryNameValid, setIsCategoryNameValid] =
-    useState<boolean>(false);
-  const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
-    useState<boolean>(true);
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
+  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
+    "Это поле обязательное"
+  );
+  const [errorMessageTextArea, setErrorMessageTextArea] = useState<
+    string | null
+  >(null);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
@@ -24,16 +26,17 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
     if (!isOpen) {
       setCategoryName("");
       setCategoryDescription("");
-      setIsCategoryNameValid(false);
+      setErrorMessageInput("Это поле обязательное");
+      setErrorMessageTextArea(null);
       setError(null);
     }
   }, [isOpen]);
 
   useEffect(() => {
     setIsDisabled(
-      isLoading || !isCategoryDescriptionValid || !isCategoryNameValid
+      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
     );
-  }, [isLoading, isCategoryDescriptionValid, isCategoryNameValid]);
+  }, [isLoading, errorMessageInput, errorMessageTextArea]);
 
   const handleCreateCategory = async () => {
     setIsLoading(true);
@@ -43,8 +46,8 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
         description: categoryDescription,
       };
 
-      const id = await CategoryStore.addCategory(newCategory);
-      id && onClose();
+      await CategoryStore.addCategory(newCategory);
+      onClose();
     } catch {
       setError("Ошибка при создании категории");
     } finally {
@@ -54,16 +57,26 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const isValid = !!value.trim() && value.length <= 255;
+    const isEmpty = !!value.trim();
+    const isLengthValid = value.length <= 255;
     setCategoryName(value);
-    setIsCategoryNameValid(isValid);
+
+    if (isEmpty && isLengthValid) {
+      setErrorMessageInput(null);
+    } else if (isEmpty && !isLengthValid) {
+      setErrorMessageInput("Длина должна быть меньше 255 символов");
+    } else {
+      setErrorMessageInput("Это поле обязательное");
+    }
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    const isValid = value.length <= 512;
+    const isLengthValid = value.length <= 512;
     setCategoryDescription(value);
-    setIsCategoryDescriptionValid(isValid);
+    isLengthValid
+      ? setErrorMessageTextArea(null)
+      : setErrorMessageTextArea("Описание должно быть меньше 512 символов");
   };
 
   return (
@@ -83,20 +96,20 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
         <div>
           <RequiredFiled
             value={categoryName}
-            isValueValid={isCategoryNameValid}
             onChange={handleCategoryNameChange}
             placeholder="Введите имя категории"
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
-            errorMessage="Это поле обязательное"
+            errorMessage={errorMessageInput}
+            helperText="Введите название категории"
           />
         </div>
         <TextAreaField
           value={categoryDescription}
-          isValueValid={isCategoryDescriptionValid}
           onChange={handleTaskDescriptionChange}
           placeholder="Введите описание"
-          errorMessage="Описание должно быть меньшне 512 символов"
+          errorMessage={errorMessageTextArea}
+          helperText="Введите описание"
         />
       </div>
     </MainPopup>

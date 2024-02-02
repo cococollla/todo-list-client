@@ -5,10 +5,10 @@ interface InputProps
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  isValueValid: boolean;
   styleClassValid: string;
   styleClassInvalid: string;
-  errorMessage: string;
+  errorMessage: string | null;
+  helperText?: string;
 }
 
 export default InputProps;

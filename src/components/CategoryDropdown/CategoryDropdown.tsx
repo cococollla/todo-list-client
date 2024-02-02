@@ -12,10 +12,6 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
   selectedCategory,
   onCategorySelect,
 }) => {
-  const renderCategoryOption = (category: Category) => (
-    <span>{category.name}</span>
-  );
-
   return (
     <DropdownList
       onSelect={onCategorySelect}

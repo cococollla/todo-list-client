@@ -5,8 +5,8 @@ import styles from "./Input.module.css";
 const Input: FC<InputProps> = ({
   value,
   onChange,
+  helperText,
   placeholder,
-  isValueValid,
   styleClassValid,
   styleClassInvalid,
   errorMessage,
@@ -26,18 +26,14 @@ const Input: FC<InputProps> = ({
           value={value}
           onChange={onChange}
           className={
-            !isValueValid ? `${styleClassInvalid}` : `${styleClassValid}`
+            errorMessage ? `${styleClassInvalid}` : `${styleClassValid}`
           }
         ></input>
-        <div
-          className={
-            isValueValid
-              ? `${styles.error_message_hidden}`
-              : `${styles.error_message}`
-          }
-        >
-          {errorMessage}
-        </div>
+        {errorMessage ? (
+          <div className={styles.error_message}>{errorMessage}</div>
+        ) : (
+          <div className={styles.herlper_text}>{helperText}</div>
+        )}
       </div>
     </>
   );

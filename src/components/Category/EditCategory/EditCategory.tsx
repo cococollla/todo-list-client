@@ -14,10 +14,13 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
   const [categoryDescription, setCategoryDescription] = useState<string>(
     category.description
   );
-  const [isCategoryDescriptionValid, setIsCategoryDescriptionValid] =
-    useState<boolean>(true);
-  const [isCategoryNameValid, setIsCategoryNameValid] = useState<boolean>(true);
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
+  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
+    null
+  );
+  const [errorMessageTextArea, setErrorMessageTextArea] = useState<
+    string | null
+  >(null);
   const { error, setError, isLoading, setIsLoading, resetState } =
     useLoadingState();
 
@@ -25,26 +28,39 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
     if (isOpen) {
       setCategoryName(category.name);
       setCategoryDescription(category.description);
-      setIsCategoryNameValid(true);
+      setErrorMessageInput(null);
+      setErrorMessageTextArea(null);
+      setError(null);
     }
   }, [isOpen]);
 
   useEffect(() => {
     setIsDisabled(
-      isLoading || !isCategoryDescriptionValid || !isCategoryNameValid
+      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
     );
-  }, [isLoading, isCategoryDescriptionValid, isCategoryNameValid]);
+  }, [isLoading, errorMessageInput, errorMessageTextArea]);
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const isEmpty = !!value.trim();
+    const isLengthValid = value.length <= 255;
     setCategoryName(value);
-    setIsCategoryNameValid(!!value.trim());
+    if (isEmpty && isLengthValid) {
+      setErrorMessageInput(null);
+    } else if (isEmpty && !isLengthValid) {
+      setErrorMessageInput("Длина должна быть меньше 255 символов");
+    } else {
+      setErrorMessageInput("Это поле обязательное");
+    }
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setCategoryDescription(value);
-    setIsCategoryDescriptionValid(value.length <= 512);
+    const isLengthValid = value.length <= 512;
+    isLengthValid
+      ? setErrorMessageTextArea(null)
+      : setErrorMessageTextArea("Описание должно быть меньше 512 символов");
   };
 
   const handleEditCategory = async () => {
@@ -83,20 +99,18 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
         <div>
           <RequiredFiled
             value={categoryName}
-            isValueValid={isCategoryNameValid}
             onChange={handleCategoryNameChange}
             placeholder="Введите имя категории"
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
-            errorMessage="Это поле обязательное"
+            errorMessage={errorMessageInput}
           />
         </div>
         <TextAreaField
           value={categoryDescription}
-          isValueValid={isCategoryDescriptionValid}
           onChange={handleTaskDescriptionChange}
           placeholder="Введите описание"
-          errorMessage="Описание должно быть меньшне 512 символов"
+          errorMessage={errorMessageTextArea}
         />
       </div>
     </MainPopup>

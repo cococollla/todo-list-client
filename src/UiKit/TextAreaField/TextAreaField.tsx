@@ -4,8 +4,8 @@ import TextAreaFieldProps from "./TextAreaField.props";
 
 const TextAreaField: FC<TextAreaFieldProps> = ({
   value,
-  isValueValid,
   onChange,
+  helperText,
   placeholder,
   errorMessage,
   ...props
@@ -20,20 +20,16 @@ const TextAreaField: FC<TextAreaFieldProps> = ({
           value={value}
           onChange={onChange}
           className={
-            !isValueValid
+            errorMessage
               ? `${styles.textarea_invalid}`
               : `${styles.textarea_valid}`
           }
         ></textarea>
-        <div
-          className={
-            isValueValid
-              ? `${styles.error_message_hidden}`
-              : `${styles.error_message}`
-          }
-        >
-          {errorMessage}
-        </div>
+        {errorMessage ? (
+          <div className={styles.error_message}>{errorMessage}</div>
+        ) : (
+          <div className={styles.herlper_text}>{helperText}</div>
+        )}
       </div>
     </>
   );
