@@ -1,7 +1,6 @@
-import { useState, useEffect, ChangeEvent, ReactNode, FC } from "react";
+import { useState, useEffect, ChangeEvent, FC } from "react";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import RequiredField from "../../../UiKit/Input/Input";
-import Category from "../../../interfaces/Category";
 import { TaskDto } from "../../../interfaces/TaskDto";
 import taskStore from "../../../store/TaskStore";
 import styles from "./CreateTask.module.css";
@@ -11,6 +10,8 @@ import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import CreateTaskProps from "./CreateTask.props";
+import { Option } from "../../../UiKit/DropdownList/DropdownList.props";
+import Category from "../../../interfaces/Category";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
@@ -75,8 +76,8 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleCategorySelect = (selectedCategory: Category) => {
-    setCategoryId(selectedCategory.id);
+  const handleCategorySelect = (selectedCategory: Option<Category>) => {
+    setCategoryId(selectedCategory.value.id);
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -114,7 +115,14 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>
             <CategoryDropdown
-              selectedCategory={categoryStore.getCategory(categoryId)}
+              selectedCategory={
+                categoryStore.getCategory(categoryId)
+                  ? {
+                      value: categoryStore.getCategory(categoryId)!,
+                      name: categoryStore.getCategory(categoryId)!.name,
+                    }
+                  : undefined
+              }
               onCategorySelect={handleCategorySelect}
             />
           </div>

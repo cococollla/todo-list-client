@@ -1,8 +1,11 @@
-interface DropDownProps<T extends { id: number; name: string }> {
-  selectedOption: T | undefined;
-  onSelect: (option: T) => void;
-  options: T[];
+export interface DropDownProps<T> {
+  selectedOption: Option<T> | undefined;
+  onSelect: (option: Option<T>) => void;
+  options: Option<T>[];
   selectMessage: string;
 }
 
-export default DropDownProps;
+export type Option<T> = {
+  value: T;
+  name: string;
+};

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import styles from "./DropdownList.module.css";
-import DropDownProps from "./DropdownList.props";
+import { DropDownProps, Option } from "./DropdownList.props";
 
-const DropdownList = <T extends { id: number; name: string }>({
+const DropdownList = <T,>({
   selectedOption,
   onSelect,
   options,
@@ -22,7 +22,7 @@ const DropdownList = <T extends { id: number; name: string }>({
     setIsOpen(!isOpen);
   };
 
-  const handleClickOption = (option: T) => {
+  const handleClickOption = (option: Option<T>) => {
     onSelect(option);
     setIsOpen(false);
   };
@@ -42,7 +42,11 @@ const DropdownList = <T extends { id: number; name: string }>({
         className={`${styles.dropdown_header} ${isOpen ? styles.open : ""}`}
         onClick={handleOpenDropdown}
       >
-        {selectedOption ? <div>{selectedOption.name}</div> : selectMessage}
+        {selectedOption ? (
+          <div className={styles.header_text}>{selectedOption.name}</div>
+        ) : (
+          selectMessage
+        )}
         <img
           src={
             isOpen ? "svg/drop-down-arrow-2.svg" : "svg/drop-down-arrow-1.svg"
@@ -51,12 +55,12 @@ const DropdownList = <T extends { id: number; name: string }>({
       </div>
       {isOpen && (
         <div className={styles.category_list}>
-          {options.map((option) => (
+          {options.map((option, index) => (
             <div
-              key={option.id}
+              key={index}
               onClick={() => handleClickOption(option)}
               className={`${styles.dropdown_item} ${
-                selectedOption?.id === option.id ? styles.selected : ""
+                selectedOption?.value === option.value ? styles.selected : ""
               }`}
             >
               {option.name}

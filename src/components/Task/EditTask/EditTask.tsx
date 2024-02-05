@@ -4,13 +4,14 @@ import Task from "../../../interfaces/Task";
 import styles from "./EditTask.module.css";
 import RequiredField from "../../../UiKit/Input/Input";
 import categoryStore from "../../../store/CategoryStore";
-import Category from "../../../interfaces/Category";
 import MainPopup from "../../../UiKit/MainPopup/MainPopup";
 import TaskStore from "../../../store/TaskStore";
 import { observer } from "mobx-react";
 import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
+import { Option } from "../../../UiKit/DropdownList/DropdownList.props";
+import Category from "../../../interfaces/Category";
 
 const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>(task.name);
@@ -78,8 +79,8 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
     }
   };
 
-  const handleCategorySelect = (selectedCategory: Category) => {
-    setCategoryId(selectedCategory.id);
+  const handleCategorySelect = (selectedCategory: Option<Category>) => {
+    setCategoryId(selectedCategory.value.id);
   };
 
   const handleTaskDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -117,7 +118,14 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>
             <CategoryDropdown
-              selectedCategory={categoryStore.getCategory(categoryId)}
+              selectedCategory={
+                categoryStore.getCategory(categoryId)
+                  ? {
+                      value: categoryStore.getCategory(categoryId)!,
+                      name: categoryStore.getCategory(categoryId)!.name,
+                    }
+                  : undefined
+              }
               onCategorySelect={handleCategorySelect}
             />
           </div>
