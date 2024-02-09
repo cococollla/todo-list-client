@@ -8,6 +8,7 @@ import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
 import categoryStore from "../../../store/CategoryStore";
 import { useLoadingState } from "../../../hooks/useLoadingState";
+import { Status } from "../../../UiKit/Input/Input.props";
 
 const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
   const [categoryName, setCategoryName] = useState<string>(category.name);
@@ -15,9 +16,7 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
     category.description
   );
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
-  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
-    null
-  );
+  const [errorInput, setErrorInput] = useState<Status | undefined>(undefined);
   const [errorMessageTextArea, setErrorMessageTextArea] = useState<
     string | null
   >(null);
@@ -28,7 +27,7 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
     if (isOpen) {
       setCategoryName(category.name);
       setCategoryDescription(category.description);
-      setErrorMessageInput(null);
+      setErrorInput(undefined);
       setErrorMessageTextArea(null);
       setError(null);
     }
@@ -36,9 +35,9 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
 
   useEffect(() => {
     setIsDisabled(
-      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
+      isLoading || errorInput !== undefined || errorMessageTextArea !== null
     );
-  }, [isLoading, errorMessageInput, errorMessageTextArea]);
+  }, [isLoading, errorInput, errorMessageTextArea]);
 
   const handleCategoryNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -46,11 +45,11 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
     const isLengthValid = value.length <= 255;
     setCategoryName(value);
     if (isEmpty && isLengthValid) {
-      setErrorMessageInput(null);
+      setErrorInput(undefined);
+    } else if (!isEmpty && isLengthValid) {
+      setErrorInput("error");
     } else if (isEmpty && !isLengthValid) {
-      setErrorMessageInput("Длина должна быть меньше 255 символов");
-    } else {
-      setErrorMessageInput("Это поле обязательное");
+      setErrorInput("warning");
     }
   };
 
@@ -103,7 +102,8 @@ const EditCategory: FC<EditCategoryProps> = ({ category, isOpen, onClose }) => {
             placeholder="Введите имя категории"
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
-            errorMessage={errorMessageInput}
+            helperText="Это поле обязательное"
+            status={errorInput}
           />
         </div>
         <TextAreaField

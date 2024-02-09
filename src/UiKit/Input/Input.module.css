@@ -25,3 +25,15 @@
   background: #dbe2ef;
   padding: 0 5px;
 }
+
+.warning_message {
+  color: #faad14;
+}
+
+.warning_input {
+  border: 2px solid #faad14;
+}
+
+.helper_text {
+  color: black;
+}

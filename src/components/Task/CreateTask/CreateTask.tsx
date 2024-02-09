@@ -12,14 +12,13 @@ import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import CreateTaskProps from "./CreateTask.props";
 import { Option } from "../../../UiKit/DropdownList/DropdownList.props";
 import Category from "../../../interfaces/Category";
+import { Status } from "../../../UiKit/Input/Input.props";
 
 const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [taskDescription, setTaskDescription] = useState<string>("");
   const [categoryId, setCategoryId] = useState<number>(0);
-  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
-    "Это поле обязательное"
-  );
+  const [errorInput, setErrorInput] = useState<Status | undefined>("error");
   const [errorMessageTextArea, setErrorMessageTextArea] = useState<
     string | null
   >(null);
@@ -32,7 +31,7 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
       setTaskName("");
       setTaskDescription("");
       setCategoryId(0);
-      setErrorMessageInput("Это поле обязательное");
+      setErrorInput("error");
       setErrorMessageTextArea(null);
       setError(null);
     }
@@ -40,9 +39,9 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     setIsDisabled(
-      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
+      isLoading || errorInput !== undefined || errorMessageTextArea !== null
     );
-  }, [isLoading, errorMessageInput, errorMessageTextArea]);
+  }, [isLoading, errorInput, errorMessageTextArea]);
 
   const handleCreateTask = async () => {
     setIsLoading(true);
@@ -68,11 +67,11 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
     const isLengthValid = value.length <= 255;
     setTaskName(value);
     if (isEmpty && isLengthValid) {
-      setErrorMessageInput(null);
+      setErrorInput(undefined);
+    } else if (!isEmpty && isLengthValid) {
+      setErrorInput("error");
     } else if (isEmpty && !isLengthValid) {
-      setErrorMessageInput("Длина должна быть меньше 255 символов");
-    } else {
-      setErrorMessageInput("Это поле обязательное");
+      setErrorInput("warning");
     }
   };
 
@@ -110,7 +109,8 @@ const CreateTask: FC<CreateTaskProps> = ({ isOpen, onClose }) => {
             placeholder="Введите имя задачи"
             styleClassValid={styles.required_field_task}
             styleClassInvalid={styles.required_field_task_invalid}
-            errorMessage={errorMessageInput}
+            helperText="Это поле обязательное"
+            status={errorInput}
           />
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>

@@ -8,14 +8,13 @@ import TextAreaField from "../../../UiKit/TextAreaField/TextAreaField";
 import { observer } from "mobx-react";
 import { useLoadingState } from "../../../hooks/useLoadingState";
 import CreateCategiryProps from "./CreateTask.props";
+import { Status } from "../../../UiKit/Input/Input.props";
 
 const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryDescription, setCategoryDescription] = useState<string>("");
   const [isDiasbled, setIsDisabled] = useState<boolean>(true);
-  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
-    "Это поле обязательное"
-  );
+  const [errorInput, setErrorInput] = useState<Status | undefined>("error");
   const [errorMessageTextArea, setErrorMessageTextArea] = useState<
     string | null
   >(null);
@@ -26,7 +25,7 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
     if (!isOpen) {
       setCategoryName("");
       setCategoryDescription("");
-      setErrorMessageInput("Это поле обязательное");
+      setErrorInput("error");
       setErrorMessageTextArea(null);
       setError(null);
     }
@@ -34,9 +33,9 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     setIsDisabled(
-      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
+      isLoading || errorInput !== undefined || errorMessageTextArea !== null
     );
-  }, [isLoading, errorMessageInput, errorMessageTextArea]);
+  }, [isLoading, errorInput, errorMessageTextArea]);
 
   const handleCreateCategory = async () => {
     setIsLoading(true);
@@ -62,11 +61,11 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
     setCategoryName(value);
 
     if (isEmpty && isLengthValid) {
-      setErrorMessageInput(null);
+      setErrorInput(undefined);
+    } else if (!isEmpty && isLengthValid) {
+      setErrorInput("error");
     } else if (isEmpty && !isLengthValid) {
-      setErrorMessageInput("Длина должна быть меньше 255 символов");
-    } else {
-      setErrorMessageInput("Это поле обязательное");
+      setErrorInput("warning");
     }
   };
 
@@ -98,10 +97,10 @@ const CreateCategory: FC<CreateCategiryProps> = ({ isOpen, onClose }) => {
             value={categoryName}
             onChange={handleCategoryNameChange}
             placeholder="Введите имя категории"
+            helperText="Это поле обязательное"
+            status={errorInput}
             styleClassValid={styles.required_field_category}
             styleClassInvalid={styles.required_field_category_invalid}
-            errorMessage={errorMessageInput}
-            helperText="Введите название категории"
           />
         </div>
         <TextAreaField

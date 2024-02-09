@@ -12,6 +12,7 @@ import { useLoadingState } from "../../../hooks/useLoadingState";
 import CategoryDropdown from "../../CategoryDropdown/CategoryDropdown";
 import { Option } from "../../../UiKit/DropdownList/DropdownList.props";
 import Category from "../../../interfaces/Category";
+import { Status } from "../../../UiKit/Input/Input.props";
 
 const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
   const [taskName, setTaskName] = useState<string>(task.name);
@@ -19,9 +20,7 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
     task.description
   );
   const [categoryId, setCategoryId] = useState<number>(task.categoryId);
-  const [errorMessageInput, setErrorMessageInput] = useState<string | null>(
-    null
-  );
+  const [errorInput, setErrorInput] = useState<Status | undefined>(undefined);
   const [errorMessageTextArea, setErrorMessageTextArea] = useState<
     string | null
   >(null);
@@ -34,7 +33,7 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
       setTaskName(task.name);
       setTaskDescription(task.description);
       setCategoryId(task.categoryId);
-      setErrorMessageInput(null);
+      setErrorInput(undefined);
       setErrorMessageTextArea(null);
       setError(null);
     }
@@ -42,9 +41,9 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
 
   useEffect(() => {
     setIsDisabled(
-      isLoading || errorMessageInput !== null || errorMessageTextArea !== null
+      isLoading || errorInput !== undefined || errorMessageTextArea !== null
     );
-  }, [isLoading, errorMessageInput, errorMessageTextArea]);
+  }, [isLoading, errorInput, errorMessageTextArea]);
 
   const handleEditTask = async () => {
     setIsLoading(true);
@@ -71,11 +70,11 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
     const isLengthValid = value.length <= 255;
     setTaskName(value);
     if (isEmpty && isLengthValid) {
-      setErrorMessageInput(null);
+      setErrorInput(undefined);
+    } else if (!isEmpty && isLengthValid) {
+      setErrorInput("error");
     } else if (isEmpty && !isLengthValid) {
-      setErrorMessageInput("Длина должна быть меньше 255 символов");
-    } else {
-      setErrorMessageInput("Это поле обязательное");
+      setErrorInput("warning");
     }
   };
 
@@ -113,7 +112,8 @@ const EditTask: FC<EditTaskProps> = ({ task, isOpen, onClose }) => {
             placeholder="Введите имя задачи"
             styleClassValid={styles.required_field_task}
             styleClassInvalid={styles.required_field_task_invalid}
-            errorMessage={errorMessageInput}
+            helperText="Это поле обязательное"
+            status={errorInput}
           />
           <div className={styles.input_box}>
             <label htmlFor="taskCategory">Категория</label>

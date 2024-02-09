@@ -1,14 +1,14 @@
 import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 
-interface InputProps
+export interface InputProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
   styleClassValid: string;
   styleClassInvalid: string;
-  errorMessage: string | null;
   helperText?: string;
+  status?: Status;
 }
 
-export default InputProps;
+export type Status = "error" | "warning";

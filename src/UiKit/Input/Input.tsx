@@ -1,15 +1,15 @@
 import { FC } from "react";
-import InputProps from "./Input.props";
+import { InputProps } from "./Input.props";
 import styles from "./Input.module.css";
 
 const Input: FC<InputProps> = ({
   value,
+  status,
   onChange,
   helperText,
   placeholder,
   styleClassValid,
   styleClassInvalid,
-  errorMessage,
   ...props
 }) => {
   return (
@@ -26,14 +26,24 @@ const Input: FC<InputProps> = ({
           value={value}
           onChange={onChange}
           className={
-            errorMessage ? `${styleClassInvalid}` : `${styleClassValid}`
+            status === "error"
+              ? `${styleClassInvalid}`
+              : status === "warning"
+              ? `${styleClassInvalid} ${styles.warning_input}`
+              : `${styleClassValid}`
           }
         ></input>
-        {errorMessage ? (
-          <div className={styles.error_message}>{errorMessage}</div>
-        ) : (
-          <div className={styles.herlper_text}>{helperText}</div>
-        )}
+        <div
+          className={
+            status === "error"
+              ? `${styles.error_message}`
+              : status === "warning"
+              ? `${styles.warning_message}`
+              : `${styles.helper_text}`
+          }
+        >
+          {helperText}
+        </div>
       </div>
     </>
   );
