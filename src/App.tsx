@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC, useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import TaskPage from "./pages/TaskPage/TaskPage";
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
+import taskStore from "./store/TaskStore";
+import categoryStore from "./store/CategoryStore";
+import styles from "./App.module.css";
 
-function App() {
+const App: FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const promises = [
+          taskStore.fetchTasks(),
+          categoryStore.fetchCategories(),
+        ];
+        await Promise.allSettled(promises);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {isLoading && (
+        <div className={styles.loader_wrapper}>
+          <div className={styles.loader}></div>
+        </div>
+      )}
+      {!isLoading && (
+        <div className="App">
+          <Routes>
+            <Route path="*" element={<Navigate to="tasks" replace={true} />} />
+            <Route path="/tasks" element={<TaskPage />} />
+            <Route path="/categories" element={<CategoryPage />} />
+          </Routes>
+        </div>
+      )}
+    </>
   );
-}
+};
 
 export default App;

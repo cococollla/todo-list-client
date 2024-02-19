@@ -1,0 +1,39 @@
+.required_star {
+  color: #ec1d1d;
+  margin-left: 5px;
+}
+
+.error_message {
+  color: #ec1d1d;
+}
+
+.item_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.input_box {
+  position: relative;
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.container label {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: #dbe2ef;
+  padding: 0 5px;
+}
+
+.warning_message {
+  color: #faad14;
+}
+
+.warning_input {
+  border: 2px solid #faad14;
+}
+
+.helper_text {
+  color: black;
+}

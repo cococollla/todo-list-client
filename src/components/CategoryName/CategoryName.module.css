@@ -1,0 +1,10 @@
+.item_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.category_description {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
